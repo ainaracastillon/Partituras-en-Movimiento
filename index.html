@@ -185,10 +185,54 @@ body:not(.lib) .libonly{display:none!important}
 
 /* ---------- pestañas ---------- */
 .tabs{position:fixed;left:0;right:0;bottom:0;background:var(--paper);display:flex;justify-content:center;gap:8px;padding:8px 10px calc(10px + env(safe-area-inset-bottom,0px));border-top:4px solid var(--ink);z-index:5}
-.tabs button{flex:1;max-width:170px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 4px;border-radius:18px;font-family:var(--display);font-weight:800;font-size:15px;color:var(--muted);border:3px solid transparent}
+.tabs button{flex:1;max-width:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.05;text-align:center;padding:6px 0 4px;border-radius:18px;font-family:var(--display);font-weight:800;font-size:15px;color:var(--muted);border:3px solid transparent}
 .tabs button svg{width:26px;height:26px}
 .tabs button[aria-selected="true"]{color:var(--ink);background:var(--tc);border-color:var(--ink);box-shadow:0 4px 0 var(--ink)}
-#t-bailar{--tc:var(--sun)} #t-recorrido{--tc:var(--sky)} #t-movs{--tc:var(--pink)}
+#t-bailar{--tc:var(--sun)} #t-letra{--tc:var(--pink)} #t-recorrido{--tc:var(--sky)}
+
+/* ---------- partitura y letra ---------- */
+.scoretools{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:8px 0;background:linear-gradient(var(--desk) 80%,transparent)}
+.scoretools .mini{width:50px;height:50px;border-radius:50%;background:var(--sun);display:grid;place-items:center;border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink)}
+.scoretools .mini svg{width:24px;height:24px}
+.scoretools .mini:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.scoretools .where{font-family:var(--display);font-weight:800;font-size:17px;line-height:1.1;min-width:0}
+.scoretools .where small{display:block;font-family:var(--body);font-size:13px;color:var(--muted)}
+.scoretools .print{margin-left:auto}
+.score{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.shead{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:10px}
+.shead .rs{font-size:14px;font-weight:700;color:var(--muted)}
+.sbar{background:var(--paper);border:3px solid color-mix(in srgb,var(--c) 55%,var(--paper));border-radius:18px;padding:6px 8px 8px;display:flex;flex-direction:column;gap:5px;cursor:pointer;min-width:0;transition:box-shadow .15s,background .15s}
+.sbar.cur{border-color:var(--ink);box-shadow:0 4px 0 var(--c);background:color-mix(in srgb,var(--c) 10%,var(--paper))}
+.sb-top{display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:12.5px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.sb-top .sec{display:inline-flex;align-items:center;gap:4px;color:var(--ink);font-family:var(--display);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sb-top .sec i{font-style:normal;flex:none;width:20px;height:20px;border-radius:7px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:12px}
+.staff5{width:100%;height:36px;display:block}
+.lyr{width:100%;font:inherit;font-size:15px;font-weight:700;border:0;border-bottom:2px dashed color-mix(in srgb,var(--c) 55%,var(--paper));background:color-mix(in srgb,var(--sun) 14%,var(--paper));border-radius:8px 8px 0 0;padding:5px 7px;color:var(--ink);min-width:0}
+.lyr::placeholder{color:color-mix(in srgb,var(--muted) 60%,var(--paper));font-weight:400}
+.lyr:focus{outline:none;border-bottom:2px solid var(--ink);background:color-mix(in srgb,var(--sun) 32%,var(--paper))}
+.pulse{display:grid;grid-template-columns:repeat(var(--nb,4),1fr);gap:4px}
+.pulse b{--bc:var(--b1);height:22px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:14px;font-weight:800;background:color-mix(in srgb,var(--bc) 16%,var(--paper));color:color-mix(in srgb,var(--bc) 70%,var(--ink))}
+.pulse b:nth-child(4n+2){--bc:var(--b2)} .pulse b:nth-child(4n+3){--bc:var(--b3)} .pulse b:nth-child(4n+4){--bc:var(--b4)}
+.pulse b:first-child::after{content:">";font-size:11px;margin-left:1px}
+.pulse b.on{background:var(--bc);color:#fff}
+.sb-move{display:flex;align-items:center;gap:6px;min-width:0}
+.sb-move svg{height:46px;width:auto;flex:none;background:color-mix(in srgb,var(--c) 12%,var(--paper));border-radius:9px}
+.sb-move span{font-family:var(--display);font-weight:800;font-size:14.5px;line-height:1.05;min-width:0}
+.mlyr{margin-top:3px;font-weight:700;font-size:16px;color:var(--grape)}
+.mlyr:empty{display:none}
+@media (min-width:640px){ .score{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media print{
+  @page{margin:12mm}
+  body{background:#fff}
+  .tabs,.top,.scoretools,.vp,#v-bailar,#v-recorrido{display:none!important}
+  #v-letra{display:flex!important}
+  .app{max-width:none;padding:0}
+  .sbar{break-inside:avoid;box-shadow:none!important}
+  .shead{break-after:avoid}
+  .lyr{background:none;border-bottom:1px solid #999}
+  .lyr::placeholder{color:transparent}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 
 @media (min-height:900px){ .mname{font-size:32px} .beats b{height:62px} .stage{height:clamp(180px,36vh,460px)} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none!important} }
@@ -229,7 +273,7 @@ body:not(.lib) .libonly{display:none!important}
         <div class="endmsg"><h2>¡Lo has bailado entero!</h2><p id="endTxt"></p><button class="btn" id="again">Otra vez</button></div>
       </div>
     </div>
-    <div class="movebox"><div class="mname" id="mname"></div><div class="mdesc" id="mdesc"></div></div>
+    <div class="movebox"><div class="mname" id="mname"></div><div class="mdesc" id="mdesc"></div><div class="mlyr" id="mlyr"></div></div>
     <div class="beats" id="beats"></div>
     <div class="next" id="next"><div id="nextFig"></div><div><div class="lbl">Después</div><div class="nn" id="nextName"></div></div></div>
     <div class="tl" id="tl" aria-label="Línea de tiempo de la canción"><div class="ph" id="ph"></div></div>
@@ -256,19 +300,23 @@ body:not(.lib) .libonly{display:none!important}
     <div class="list" id="routeList"></div>
   </section>
 
-  <!-- MOVIMIENTOS -->
-  <section class="view songonly" id="v-movs" role="tabpanel" aria-labelledby="t-movs" hidden>
-    <h2 class="vh">Todos los movimientos</h2>
-    <p class="vp">Toca uno para practicarlo en la canción.</p>
-    <div class="legend"><span><i style="background:var(--legs)"></i>Piernas</span><span><i style="background:var(--arms)"></i>Brazos</span><span><i style="background:var(--trunk)"></i>Tronco y cabeza</span></div>
-    <div id="movList"></div>
+  <!-- PARTITURA Y LETRA -->
+  <section class="view songonly" id="v-letra" role="tabpanel" aria-labelledby="t-letra" hidden>
+    <h2 class="vh">Partitura y letra</h2>
+    <p class="vp">Escribe la letra que se canta en cada compás: se guarda sola en este dispositivo. Toca un compás para empezar desde ahí.</p>
+    <div class="scoretools">
+      <button class="mini" id="scorePlay" aria-label="Reproducir"><svg viewBox="0 0 24 24" id="scorePlayIco"></svg></button>
+      <div class="where" id="scoreWhere"></div>
+      <button class="tog print" id="printBtn">🖨️ Imprimir</button>
+    </div>
+    <div class="score" id="score"></div>
   </section>
 </div>
 
 <nav class="tabs songonly" role="tablist">
   <button role="tab" id="t-bailar" data-v="bailar" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="4.5" r="2.3"/><path d="M12 7v7M12 9l-5 3M12 9l5-4M12 14l-4 7M12 14l4 6"/></svg>Bailar</button>
+  <button role="tab" id="t-letra" data-v="letra" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>Partitura y letra</button>
   <button role="tab" id="t-recorrido" data-v="recorrido" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.2" fill="currentColor"/><circle cx="3.5" cy="12" r="1.2" fill="currentColor"/><circle cx="3.5" cy="18" r="1.2" fill="currentColor"/></svg>Recorrido</button>
-  <button role="tab" id="t-movs" data-v="movs" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>Movimientos</button>
 </nav>
 
 <script>
@@ -478,7 +526,7 @@ const tl = $('tl');
 
 const ICON_PLAY = '<path d="M7 4.5v15l13-7.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>';
 const ICON_PAUSE = '<rect x="5.5" y="4" width="4.5" height="16" rx="1.5" fill="currentColor"/><rect x="14" y="4" width="4.5" height="16" rx="1.5" fill="currentColor"/>';
-function setPlayIcon(){ $('playIco').innerHTML = st.playing ? ICON_PAUSE : ICON_PLAY; $('play').setAttribute('aria-label', st.playing?'Pausa':'Reproducir'); }
+function setPlayIcon(){ $('playIco').innerHTML = $('scorePlayIco').innerHTML = st.playing ? ICON_PAUSE : ICON_PLAY; $('scorePlay').setAttribute('aria-label', st.playing?'Pausa':'Reproducir'); $('play').setAttribute('aria-label', st.playing?'Pausa':'Reproducir'); }
 
 const tagsHTML = parts => parts.map(p=>`<span class="tag" style="background:${COL[p]}"></span>`).join('');
 function barAt(t){ let lo=0, hi=BARS.length-1; while(lo<hi){ const mid=(lo+hi+1)>>1; if(BARS[mid].t<=t+1e-6) lo=mid; else hi=mid-1; } return lo; }
@@ -497,6 +545,14 @@ function onBarChange(i){
   if (ni===i){ $('next').style.visibility='hidden'; }
   else { $('next').style.visibility=''; $('next').style.setProperty('--nc', nb.sec.color); $('nextFig').innerHTML = staticFig(nb.m); $('nextName').textContent = nb.m[2] + (nb.seg!==b.seg ? ` · ${nb.sec.name}` : ''); }
   tlSegs.forEach((d,k)=>d.classList.toggle('cur', k===b.seg));
+  $('mlyr').textContent = (LYR[i]||'').trim() ? '🎤 '+LYR[i] : '';
+  scoreBars.forEach(el=>el.classList.remove('cur'));
+  const sb = scoreBars[i];
+  curPulse.forEach(x=>x.classList.remove('on'));
+  curPulse = sb ? [...sb.querySelectorAll('.pulse b')] : [];
+  if (sb){ sb.classList.add('cur');
+    if (st.playing && !$('v-letra').hidden && !(document.activeElement && document.activeElement.classList.contains('lyr'))) sb.scrollIntoView({block:'center', behavior:'smooth'}); }
+  $('scoreWhere').innerHTML = `${b.sec.name}<small>compás ${b.n} de ${BARS.length} · ${mmss(b.t)}</small>`;
   document.querySelectorAll('.row').forEach((r,k)=>r.classList.toggle('cur', k===b.seg));
 }
 
@@ -512,6 +568,7 @@ function render(){
     if (key!==st.lastKey){ st.lastKey=key; click(beat===0); }
   }
   beatsEls.forEach((el,k)=>el.classList.toggle('on', k===beat && (st.playing ? st.ci===null : true)));
+  curPulse.forEach((el,k)=>el.classList.toggle('on', st.playing && st.ci===null && k===beat));
   // transición suave hacia el siguiente movimiento al final del compás
   const phase = into/BAR_S, ni = nextIdx(i);
   let k = 0; if (st.playing && ni!==i && phase>0.84){ k = Math.min(1,(phase-0.84)/0.16); k = k*k*(3-2*k); }
@@ -616,11 +673,20 @@ function loadSong(song){
     <span class="dot">${s.id}</span>
     <span><span class="rn">${s.sec.name}</span><br><span class="rs">${s.nth>1?s.nth+'ª vez · ':''}compases ${s.first+1}–${s.last+1}${s.from>1?' (desde la mitad)':''}</span></span>
     <span class="rt">${mmss(s.t0)}</span></button>`).join('');
-  // movimientos
-  $('movList').innerHTML = Object.entries(SECTIONS).map(([id,s])=>`
-    <div class="sech"><span class="pill" style="background:${s.color}"><i>${id}</i>${s.name}</span></div>
-    <div class="cards">${s.moves.map((m,k)=>`<button class="card" data-id="${id}" data-k="${k+1}" style="--k:${s.color}">${staticFig(m)}
-      <span class="cn">${tagsHTML(m[1])}${m[2]}</span><span class="cd">${m[3]}</span></button>`).join('')}</div>`).join('');
+  // partitura y letra
+  LYR = Object.assign({}, song.lyrics||{}, store.get('lyr.'+song.id, {}));
+  const pulse = `<div class="pulse" style="--nb:${BEATS}">${Array.from({length:BEATS},(_,k)=>`<b>${k+1}</b>`).join('')}</div>`;
+  $('score').innerHTML = SEGS.map((sg,si)=>`
+    <div class="shead"><span class="pill" style="background:${sg.sec.color}"><i>${sg.id}</i>${sg.sec.name}</span><span class="rs">${sg.nth>1?sg.nth+'ª vez · ':''}${mmss(sg.t0)}</span></div>` +
+    BARS.slice(sg.first, sg.last+1).map(b=>`
+    <div class="sbar" data-i="${b.n-1}" style="--c:${b.sec.color}">
+      <div class="sb-top"><span class="sec"><i>${b.id}</i>c. ${b.n}</span><span>${mmss(b.t)}</span></div>
+      ${STAFF5}
+      <input class="lyr" data-i="${b.n-1}" value="${esc(LYR[b.n-1]||'')}" placeholder="Letra…" aria-label="Letra del compás ${b.n}" autocomplete="off">
+      ${pulse}
+      <div class="sb-move">${staticFig(b.m)}<span>${tagsHTML(b.m[1])} ${b.m[2]}</span></div>
+    </div>`).join('')).join('');
+  scoreBars = [...$('score').querySelectorAll('.sbar')];
   showView('bailar');
   render();
 }
@@ -628,19 +694,33 @@ function loadSong(song){
 /* ---------- recorrido ---------- */
 $('routeList').addEventListener('click', e => { const r=e.target.closest('.row'); if(!r) return; seekBar(SEGS[+r.dataset.i].first); showView('bailar'); });
 
-/* ---------- movimientos ---------- */
-$('movList').addEventListener('click', e => {
-  const c = e.target.closest('.card'); if(!c) return;
-  const i = BARS.findIndex(b=>b.id===c.dataset.id && b.local===+c.dataset.k);
-  if (i>=0){ seekBar(i); showView('bailar'); }
+/* ---------- partitura y letra ---------- */
+let LYR = {}, scoreBars = [], curPulse = [], saveT = 0;
+const esc = t => String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const STAFF5 = (()=>{ let s='<svg class="staff5" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true">';
+  for (let i=0;i<5;i++) s+=`<line x1="0" y1="${4+i*8}" x2="160" y2="${4+i*8}" stroke="var(--ink)" stroke-width="0.9" vector-effect="non-scaling-stroke"/>`;
+  return s+'<line x1="159.5" y1="4" x2="159.5" y2="36" stroke="var(--ink)" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>'; })();
+$('score').addEventListener('input', e => {
+  const el = e.target.closest('.lyr'); if(!el) return;
+  const v = el.value.trim(); if (v) LYR[el.dataset.i] = el.value; else delete LYR[el.dataset.i];
+  clearTimeout(saveT); saveT = setTimeout(()=>store.set('lyr.'+SONG.id, LYR), 300);
+  if (+el.dataset.i===st.idx) $('mlyr').textContent = v ? '🎤 '+el.value : '';
 });
+$('score').addEventListener('click', e => {
+  if (e.target.closest('.lyr')) return;
+  const b = e.target.closest('.sbar'); if(!b) return;
+  seekBar(+b.dataset.i);
+});
+$('scorePlay').onclick = () => st.playing ? pause() : play();
+$('printBtn').onclick = () => { try { window.print(); } catch(e) {} };
 
 /* ---------- pestañas ---------- */
 const tabs = [...document.querySelectorAll('.tabs button')];
 function showView(v){
   tabs.forEach(t=>t.setAttribute('aria-selected', String(t.dataset.v===v)));
-  ['bailar','recorrido','movs'].forEach(n=>$('v-'+n).hidden = n!==v);
+  ['bailar','letra','recorrido'].forEach(n=>$('v-'+n).hidden = n!==v);
   window.scrollTo(0,0);
+  if (v==='letra' && scoreBars[st.idx]) scoreBars[st.idx].scrollIntoView({block:'center'});
 }
 tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
 
