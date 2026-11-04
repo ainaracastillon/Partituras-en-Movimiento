@@ -218,13 +218,25 @@ body:not(.lib) .libonly{display:none!important}
 .sb-move{display:flex;align-items:center;gap:6px;min-width:0}
 .sb-move svg{height:46px;width:auto;flex:none;background:color-mix(in srgb,var(--c) 12%,var(--paper));border-radius:9px}
 .sb-move span{font-family:var(--display);font-weight:800;font-size:14.5px;line-height:1.05;min-width:0}
+.modes{align-self:center}
+.modes button{font-size:17px;padding:6px 16px}
+.lyfull{background:var(--paper);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);border-radius:24px;padding:16px 16px 6px}
+.lyfull[hidden],.score[hidden]{display:none}
+.lyblock{margin-bottom:16px}
+.lyblock .pill{margin-bottom:6px}
+.ll{display:block;width:100%;text-align:left;margin:1px 0;font-size:21px;line-height:1.35;font-weight:700;padding:3px 10px;border-radius:12px;font-family:var(--body);transition:background .15s}
+.ll.cur{background:color-mix(in srgb,var(--c) 24%,var(--paper));box-shadow:inset 5px 0 0 var(--c)}
+.lyempty{text-align:center;padding:26px 10px 32px;color:var(--muted);font-weight:700;font-size:17px;line-height:1.4}
+.lyempty b{display:block;font-family:var(--display);font-size:24px;color:var(--ink);margin-bottom:4px}
 .mlyr{margin-top:3px;font-weight:700;font-size:16px;color:var(--grape)}
 .mlyr:empty{display:none}
 @media (min-width:640px){ .score{grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media print{
   @page{margin:12mm}
   body{background:#fff}
-  .tabs,.top,.scoretools,.vp,#v-bailar,#v-recorrido{display:none!important}
+  .tabs,.top,.scoretools,.modes,.vp,#v-bailar,#v-recorrido{display:none!important}
+  .lyfull{border:0;box-shadow:none;padding:0}
+  .ll.cur{background:none;box-shadow:none}
   #v-letra{display:flex!important}
   .app{max-width:none;padding:0}
   .sbar{break-inside:avoid;box-shadow:none!important}
@@ -303,13 +315,17 @@ body:not(.lib) .libonly{display:none!important}
   <!-- PARTITURA Y LETRA -->
   <section class="view songonly" id="v-letra" role="tabpanel" aria-labelledby="t-letra" hidden>
     <h2 class="vh">Partitura y letra</h2>
-    <p class="vp">Escribe la letra que se canta en cada compás: se guarda sola en este dispositivo. Toca un compás para empezar desde ahí.</p>
+    <p class="vp">Escribe la letra de cada compás en la partitura: se guarda sola en este dispositivo y aparece unida en «Letra completa».</p>
     <div class="scoretools">
       <button class="mini" id="scorePlay" aria-label="Reproducir"><svg viewBox="0 0 24 24" id="scorePlayIco"></svg></button>
       <div class="where" id="scoreWhere"></div>
-      <button class="tog print" id="printBtn">🖨️ Imprimir</button>
+      <button class="tog print" id="printBtn" aria-label="Imprimir">🖨️</button>
+    </div>
+    <div class="seg modes" id="modes" role="group" aria-label="Qué ver">
+      <button data-m="score" aria-pressed="true">🎼 Partitura</button><button data-m="full" aria-pressed="false">📝 Letra completa</button>
     </div>
     <div class="score" id="score"></div>
+    <div class="lyfull" id="lyfull" hidden></div>
   </section>
 </div>
 
@@ -552,6 +568,7 @@ function onBarChange(i){
   curPulse = sb ? [...sb.querySelectorAll('.pulse b')] : [];
   if (sb){ sb.classList.add('cur');
     if (st.playing && !$('v-letra').hidden && !(document.activeElement && document.activeElement.classList.contains('lyr'))) sb.scrollIntoView({block:'center', behavior:'smooth'}); }
+  markFull(i, st.playing);
   $('scoreWhere').innerHTML = `${b.sec.name}<small>compás ${b.n} de ${BARS.length} · ${mmss(b.t)}</small>`;
   document.querySelectorAll('.row').forEach((r,k)=>r.classList.toggle('cur', k===b.seg));
 }
@@ -684,9 +701,9 @@ function loadSong(song){
       ${STAFF5}
       <input class="lyr" data-i="${b.n-1}" value="${esc(LYR[b.n-1]||'')}" placeholder="Letra…" aria-label="Letra del compás ${b.n}" autocomplete="off">
       ${pulse}
-      <div class="sb-move">${staticFig(b.m)}<span>${tagsHTML(b.m[1])} ${b.m[2]}</span></div>
     </div>`).join('')).join('');
   scoreBars = [...$('score').querySelectorAll('.sbar')];
+  renderFull();
   showView('bailar');
   render();
 }
@@ -711,6 +728,30 @@ $('score').addEventListener('click', e => {
   const b = e.target.closest('.sbar'); if(!b) return;
   seekBar(+b.dataset.i);
 });
+let MODE = 'score', fullLines = [];
+function renderFull(){
+  const blocks = SEGS.map(sg=>{
+    const lines = BARS.slice(sg.first, sg.last+1).map(b=>b.n-1).filter(i=>(LYR[i]||'').trim());
+    if (!lines.length) return '';
+    return `<div class="lyblock" style="--c:${sg.sec.color}"><span class="pill" style="background:${sg.sec.color}"><i>${sg.id}</i>${sg.sec.name}</span>${lines.map(i=>`<button class="ll" data-i="${i}">${esc(LYR[i])}</button>`).join('')}</div>`;
+  }).join('');
+  $('lyfull').innerHTML = blocks || `<div class="lyempty"><b>Aún no hay letra</b>Escríbela compás a compás en «🎼 Partitura» y aquí aparecerá la canción entera.</div>`;
+  fullLines = [...$('lyfull').querySelectorAll('.ll')];
+  markFull(st.idx, false);
+}
+function markFull(i, scroll){
+  fullLines.forEach(l=>l.classList.toggle('cur', +l.dataset.i===i));
+  const el = fullLines.find(l=>+l.dataset.i===i);
+  if (el && scroll && MODE==='full' && !$('v-letra').hidden) el.scrollIntoView({block:'center', behavior:'smooth'});
+}
+function setMode(m){
+  MODE = m;
+  [...$('modes').children].forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.m===m)));
+  $('score').hidden = m!=='score'; $('lyfull').hidden = m!=='full';
+  if (m==='full') renderFull();
+}
+$('modes').addEventListener('click', e => { const b=e.target.closest('button'); if(b) setMode(b.dataset.m); });
+$('lyfull').addEventListener('click', e => { const l=e.target.closest('.ll'); if(l) seekBar(+l.dataset.i); });
 $('scorePlay').onclick = () => st.playing ? pause() : play();
 $('printBtn').onclick = () => { try { window.print(); } catch(e) {} };
 
