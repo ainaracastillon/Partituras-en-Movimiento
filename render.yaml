@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: partituras-en-movimiento
+    runtime: static
+    buildCommand: echo "sin compilación"
+    staticPublishPath: ./
