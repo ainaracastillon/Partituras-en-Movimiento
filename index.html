@@ -183,6 +183,11 @@ body:not(.lib) .libonly{display:none!important}
 .pulse{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .pulse b{height:18px;border-radius:99px;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--cream);color:var(--muted)}
 .pulse b.on{background:var(--e);color:#fff}
+.bookscore{background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.bshead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.bshead span{font-size:12.5px;color:var(--muted)}
+#bookImgs{display:flex;flex-direction:column;gap:10px}
+#bookImgs img{width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:8px}
 .pdfbox{background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
 .pdfhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .pdfhead b{margin-right:auto}
@@ -310,6 +315,10 @@ body:not(.lib) .libonly{display:none!important}
       <button class="tog" id="printBtn" aria-label="Imprimir">🖨️</button>
     </div>
     <div class="seg modes" id="modes" role="group" aria-label="Qué ver"><button data-m="score" aria-pressed="true">🎼 Partitura</button><button data-m="full" aria-pressed="false">📝 Letra completa</button></div>
+    <div class="bookscore" id="bookScore" hidden>
+      <div class="bshead"><b>📖 Partitura del cuaderno</b><span>Toca una página para verla en grande</span></div>
+      <div id="bookImgs"></div>
+    </div>
     <div class="pdfbox" id="pdfBox" hidden>
       <div class="pdfhead"><b>📄 Partitura en PDF</b><a class="tog" id="pdfOpen" href="#" target="_blank" rel="noopener">Abrir ↗</a><button class="tog" id="pdfDel">Quitar</button></div>
       <iframe id="pdfFrame" title="Partitura en PDF"></iframe>
@@ -496,7 +505,7 @@ function loadSong(song){
       <div class="pulse"><b>1</b><b>2</b><b>3</b><b>4</b></div>
     </div>`).join('');
   scoreBars = [...$('score').querySelectorAll('.sbar')];
-  setMode('score'); renderFull(); loadPdf(song.id); loadAudio(song.id);
+  setMode('score'); renderFull(); loadPdf(song.id); loadAudio(song.id); loadServerExtras(song.id);
   showView('bailar');
   render();
 }
@@ -654,6 +663,7 @@ function setMode(m){
   [...$('modes').children].forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.m===m)));
   $('score').hidden = m!=='score' || !!(SONG && SONG.instrumental); $('lyfull').hidden = m!=='full';
   $('pdfBox').hidden = m!=='score' || !pdfUrl;
+  $('bookScore').hidden = m!=='score' || !bookN;
   if (m==='full') renderFull();
 }
 $('modes').addEventListener('click', e => { const b=e.target.closest('button'); if(b) setMode(b.dataset.m); });
@@ -678,6 +688,33 @@ $('pasteOk').onclick = () => {
   else { closePaste(); setMode('full'); }
 };
 $('pasteClear').onclick = () => { LYR = {}; store.set('lyrRaw.'+SONG.id,''); store.set('lyr.'+SONG.id, LYR); $('pasteTxt').value=''; refreshLyrics(); $('pasteMsg').textContent='Letra borrada.'; };
+
+/* Partitura y letra subidas a la web (carpetas partituras/ y letras/) */
+let bookN = 0, SERVER_LYR = {};
+const okType = (r, t) => r.ok && (r.headers.get('content-type')||'').includes(t);
+async function loadServerExtras(id){
+  bookN = 0; $('bookImgs').innerHTML = ''; $('bookScore').hidden = true;
+  // páginas de partitura: partituras/<id>-1.webp, -2.webp…
+  const pages = [];
+  for (let n=1; n<=8; n++){
+    try { const url = `partituras/${id}-${n}.webp`, r = await fetch(url, {method:'HEAD', cache:'no-store'}); if (!okType(r,'image')) break; pages.push(url); } catch(e) { break; }
+  }
+  if (SONG && SONG.id===id && pages.length){
+    bookN = pages.length;
+    $('bookImgs').innerHTML = pages.map((u,k)=>`<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="Partitura, página ${k+1}" loading="lazy"></a>`).join('');
+    $('bookScore').hidden = MODE!=='score';
+  }
+  // letra: letras/<id>.txt con líneas «07 (00:12): texto»
+  try {
+    const r = await fetch(`letras/${id}.txt`, {cache:'no-store'});
+    if (okType(r,'text') && SONG && SONG.id===id){
+      const txt = await r.text(); SERVER_LYR = {};
+      txt.split(/\r?\n/).forEach(line => { const m = line.match(/^\s*(\d{1,3})\s*(?:\([^)]*\))?\s*[:.\-]\s?(.*)$/); if (m && m[2].trim()) SERVER_LYR[+m[1]-1] = m[2].trim(); });
+      LYR = Object.assign({}, SERVER_LYR, store.get('lyr.'+id, {}));
+      refreshLyrics();
+    }
+  } catch(e) {}
+}
 
 /* PDF guardado en este dispositivo */
 const idb = (() => {
