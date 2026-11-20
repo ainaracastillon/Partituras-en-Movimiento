@@ -223,7 +223,9 @@ body:not(.lib) .libonly{display:none!important}
 .vpop .vbar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vpop .vbar button,.vpop .vbar a{flex:none;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer}
 .vpop .vbox{position:relative;aspect-ratio:16/9;background:#000}
-.vpop iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vpop iframe,.vpop video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.vpop .vsync{display:none;background:var(--gold);color:var(--wine);font-size:12.5px;font-weight:700;text-align:center;padding:4px 8px}
+.vpop.local .vsync{display:block}
 .vpop.big{left:50%!important;top:50%!important;right:auto;bottom:auto;width:min(1100px,calc(100vw - 32px));transform:translate(-50%,-50%);animation:none}
 .vshade{position:fixed;inset:0;z-index:29;background:rgba(40,8,18,.55)}
 @media (max-width:640px){ .vpop{left:12px;right:12px;width:auto;bottom:auto;top:calc(84px + env(safe-area-inset-top,0px))} .vpop.big{transform:none;left:12px!important;right:12px;top:calc(84px + env(safe-area-inset-top,0px))!important;width:auto} }
@@ -347,7 +349,8 @@ body:not(.lib) .libonly{display:none!important}
     <button id="vbig" aria-label="Ampliar el vídeo">⤢</button>
     <a id="vext" href="#" target="_blank" rel="noopener" aria-label="Abrir en YouTube">↗</a>
     <button id="vclose" aria-label="Cerrar el vídeo">✕</button></div>
-  <div class="vbox"><iframe id="vframe" title="Vídeo de la canción" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <div class="vsync">Los pasos de la app van sincronizados con el vídeo</div>
+  <div class="vbox"><video id="vlocal" controls playsinline preload="metadata" hidden></video><iframe id="vframe" title="Vídeo de la canción" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
 </div>
 
 <nav class="tabs songonly" role="tablist">
@@ -434,7 +437,7 @@ async function loadAudio(id){
 let ac = null;
 function ensureAudio(){ try{ if(!ac) ac = new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==='suspended') ac.resume(); }catch(e){ ac=null; } }
 function click(accent){
-  if (!st.sound || !ac) return;
+  if (!st.sound || !ac || st.vdrive) return;
   const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
   o.frequency.value = accent ? 1568 : 1046; o.type = 'triangle';
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(accent?0.35:0.2,t+0.004); g.gain.exponentialRampToValueAtTime(0.0001,t+0.08);
@@ -492,7 +495,7 @@ function loadSong(song){
   // línea de tiempo
   tl.querySelectorAll('.tk').forEach(e=>e.remove());
   STEPS.forEach((s,i) => { if (i===0) return; const d=document.createElement('div'); d.className = 'tk' + (i%PER_PAGE===0?' pgk':''); d.style.left=(s.t/END*100)+'%'; tl.insertBefore(d,$('ph')); });
-  loadSheet(song.id); loadAudio(song.id); loadLyrics(song.id); closeZoom();
+  loadSheet(song.id); loadAudio(song.id); loadLyrics(song.id); closeZoom(); probeVideo(song.id);
   showView('bailar');
   render();
 }
@@ -564,9 +567,11 @@ function tick(ts){
       else if (cb!==st.ciBeat){ st.ciBeat=cb; click(cb===0); const n=$('ciNum'); n.textContent=cb+1; n.classList.remove('pop'); void n.offsetWidth; n.classList.add('pop'); }
     } else {
       const i = stepAt(st.clock);
-      if (hasAudio() && !audio.paused && audio.readyState>=2) st.clock = audio.currentTime - audioOffset;
+      if (st.vdrive) st.clock = $('vlocal').currentTime;
+      else if (hasAudio() && !audio.paused && audio.readyState>=2) st.clock = audio.currentTime - audioOffset;
       else if (!hasAudio()) st.clock += dt*st.speed;
-      if (st.loop && i>=0 && st.clock >= STEPS[i].t + STEPS[i].dur){ st.clock = STEPS[i].t; st.lastKey=null; audioSync(); }
+      if (st.vdrive){ if (st.clock >= END) st.clock = END - 1e-3; }
+      else if (st.loop && i>=0 && st.clock >= STEPS[i].t + STEPS[i].dur){ st.clock = STEPS[i].t; st.lastKey=null; audioSync(); }
       else if (st.clock >= END){ st.clock = END - 1e-3; finish(); }
     }
   }
@@ -586,7 +591,7 @@ function play(){
   if (st.countin) startCount(); else audioStart();
   setPlayIcon(); keepAwake(true); $('stage').classList.add('playing');
 }
-function pause(){ audioStop(); st.playing=false; st.ci=null; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); $('ciBox').hidden=true; setPlayIcon(); keepAwake(false); }
+function pause(){ if (st.vdrive){ try{ $('vlocal').pause(); }catch(e){} st.vdrive=false; } audioStop(); st.playing=false; st.ci=null; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); $('ciBox').hidden=true; setPlayIcon(); keepAwake(false); }
 function finish(){ pause(); st.ended=true; $('endBox').hidden=false; confetti(); }
 function confetti(){
   const box = $('confetti'), cols = ['#800020','#d4af37','#e3c46a','#7d9470','#1a1a1a'];
@@ -595,6 +600,7 @@ function confetti(){
 }
 function seekStep(i){
   i = Math.max(-1, Math.min(STEPS.length-1, i));
+  if (st.vdrive || (!$('vpop').hidden && !$('vlocal').hidden)){ try{ $('vlocal').currentTime = i<0 ? 0 : STEPS[i].t; }catch(e){} st.lastKey=null; if (st.vdrive) return; }
   st.clock = i<0 ? 0 : STEPS[i].t; st.lastKey=null; st.ended=false; $('endBox').hidden=true;
   if (st.playing && st.countin){ audioStop(); startCount(); } else if (st.playing) audioSync();
 }
@@ -716,16 +722,45 @@ $('useMusic').onclick = () => { useAudio = !useAudio; $('useMusic').setAttribute
 $('delMusic').onclick = async () => { await idb.del('audio.'+SONG.id); setAudio(null); };
 
 /* vídeo dentro de la app: ventana flotante que se puede mover, ampliar y cerrar */
+// Si en la web hay videos/<canción>.mp4, se usa ese vídeo (y los pasos lo siguen); si no, YouTube.
+let localVideo = null;
+async function probeVideo(id){
+  localVideo = null;
+  try { const u = `videos/${id}.mp4`, r = await fetch(u, {method:'HEAD', cache:'no-store'});
+        if (r.ok && (r.headers.get('content-type')||'').includes('video') && SONG && SONG.id===id) localVideo = u; } catch(e) {}
+}
+const vl = $('vlocal');
+vl.addEventListener('play', () => {
+  if (st.playing && !st.vdrive){ audioStop(); st.ci=null; $('ciBox').hidden=true; }
+  ensureAudio(); st.vdrive = true; st.playing = true; st.ended = false; $('endBox').hidden = true; st.lastKey = null;
+  $('stage').classList.add('playing'); setPlayIcon(); keepAwake(true);
+});
+const stopDrive = () => { if (!st.vdrive) return; st.vdrive = false; st.playing = false; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); setPlayIcon(); keepAwake(false); };
+vl.addEventListener('pause', stopDrive);
+vl.addEventListener('ended', () => { stopDrive(); confetti(); });
+vl.addEventListener('seeked', () => { st.clock = vl.currentTime; st.lastKey = null; });
 function openVideo(){
-  if (!SONG || !SONG.yt) return;
+  if (!SONG) return;
   if (st.playing) pause();                       // que no suenen a la vez la app y el vídeo
+  const v = $('vpop');
+  if (localVideo){
+    $('vframe').hidden = true; $('vframe').src = 'about:blank'; vl.hidden = false; v.classList.add('local');
+    $('vtitle').textContent = `${SONG.title} · coreografía`; $('vext').hidden = true;
+    if (vl.getAttribute('src') !== localVideo) vl.src = localVideo;
+    try { vl.currentTime = Math.max(0, st.clock); } catch(e) {}
+    v.hidden = false; v.classList.remove('big'); v.style.left = v.style.top = ''; $('vshade').hidden = true;
+    vl.play().catch(()=>{});
+    return;
+  }
+  if (!SONG.yt) return;
+  vl.hidden = true; vl.removeAttribute('src'); $('vframe').hidden = false; v.classList.remove('local'); $('vext').hidden = false;
   const start = SONG.offset || 0;
   $('vtitle').textContent = `${SONG.title} · desde ${m_ss(start)}`;
   $('vext').href = `https://www.youtube.com/watch?v=${SONG.yt}&t=${start}s`;
   $('vframe').src = `https://www.youtube-nocookie.com/embed/${SONG.yt}?start=${start}&autoplay=1&rel=0&playsinline=1&modestbranding=1`;
-  const v = $('vpop'); v.hidden = false; v.classList.remove('big'); v.style.left = v.style.top = ''; $('vshade').hidden = true;
+  v.hidden = false; v.classList.remove('big'); v.style.left = v.style.top = ''; $('vshade').hidden = true;
 }
-function closeVideo(){ $('vpop').hidden = true; $('vshade').hidden = true; $('vframe').src = 'about:blank'; }
+function closeVideo(){ $('vpop').hidden = true; $('vshade').hidden = true; $('vframe').src = 'about:blank'; try{ vl.pause(); }catch(e){} stopDrive(); }
 $('vid').onclick = openVideo;
 $('vclose').onclick = closeVideo;
 $('vshade').onclick = () => { $('vpop').classList.remove('big'); $('vshade').hidden = true; };
