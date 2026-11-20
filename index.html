@@ -388,15 +388,17 @@ const st = { clock:0, playing:false, speed:store.get('speed',1), sound:store.get
 
 /* ===================== música (MP3 cargado en este dispositivo) ===================== */
 const audio = new Audio(); audio.preload = 'auto';
-let audioUrl = null, useAudio = true;
+let audioUrl = null, useAudio = true, audioOffset = 0;
+// Si el MP3 dura poco más que la coreografía es el fragmento (empieza en 0); si no, es la canción entera.
+audio.addEventListener('loadedmetadata', () => { if (SONG) audioOffset = (isFinite(audio.duration) && audio.duration <= END + 10) ? 0 : (SONG.offset||0); });
 const hasAudio = () => !!audioUrl && useAudio;
-function audioSync(){ if (!SONG) return; try { audio.currentTime = (SONG.offset||0) + st.clock; } catch(e) {} }
+function audioSync(){ if (!SONG) return; try { audio.currentTime = audioOffset + st.clock; } catch(e) {} }
 function audioStart(){ if (!hasAudio()) return; audio.playbackRate = st.speed; try{ audio.preservesPitch = true; }catch(e){} audioSync(); audio.play().catch(()=>{}); }
 function audioStop(){ try { audio.pause(); } catch(e) {} }
 function setAudio(blob){
   audioStop(); if (audioUrl) URL.revokeObjectURL(audioUrl);
   audioUrl = blob ? URL.createObjectURL(blob) : null;
-  audio.src = audioUrl || '';
+  audioOffset = SONG ? (SONG.offset||0) : 0; audio.src = audioUrl || '';
   $('addMusic').hidden = !!audioUrl; $('hasMusic').hidden = !audioUrl;
   $('useMusic').setAttribute('aria-pressed', String(useAudio));
 }
@@ -451,7 +453,7 @@ function loadSong(song){
   $('stage').classList.toggle('fig', !!song.figures);
   $('beats').hidden = !!song.figures; $('hold').hidden = !song.figures;
   $('loop').innerHTML = song.figures ? '🔁 Repetir figura' : '🔁 Repetir paso';
-  $('hint').textContent = `Añade el MP3 de la canción y los pasos irán solos con la música, desde el fragmento ${song.fragment}. Se guarda solo en este dispositivo.`;
+  $('hint').textContent = `Añade el MP3 (la canción entera o solo el fragmento ${song.fragment}) y los pasos irán solos con la música. Se guarda solo en este dispositivo.`;
   STEPS.forEach(s => { const im = new Image(); im.src = s.img; });
   // línea de tiempo
   tl.querySelectorAll('.tk').forEach(e=>e.remove());
@@ -543,7 +545,7 @@ function tick(ts){
       else if (cb!==st.ciBeat){ st.ciBeat=cb; click(cb===0); const n=$('ciNum'); n.textContent=cb+1; n.classList.remove('pop'); void n.offsetWidth; n.classList.add('pop'); }
     } else {
       const i = stepAt(st.clock);
-      if (hasAudio() && !audio.paused && audio.readyState>=2) st.clock = audio.currentTime - (SONG.offset||0);
+      if (hasAudio() && !audio.paused && audio.readyState>=2) st.clock = audio.currentTime - audioOffset;
       else if (!hasAudio()) st.clock += dt*st.speed;
       if (st.loop && i>=0 && st.clock >= STEPS[i].t + STEPS[i].dur){ st.clock = STEPS[i].t; st.lastKey=null; audioSync(); }
       else if (st.clock >= END){ st.clock = END - 1e-3; finish(); }
