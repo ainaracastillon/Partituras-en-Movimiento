@@ -24,7 +24,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
-body{background:var(--cream);color:var(--ink);font-family:var(--font);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+html{background-color:var(--wine)}
+body{background-color:var(--wine);background-image:linear-gradient(var(--cream),var(--cream));color:var(--ink);font-family:var(--font);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 a{color:inherit;text-decoration:none}
 button:focus-visible,a:focus-visible,label:focus-within{outline:3px solid var(--gold);outline-offset:2px}
@@ -32,6 +33,39 @@ h1,h2,h3{margin:0;line-height:1.05}
 [hidden]{display:none!important}
 body.lib .songonly{display:none!important}
 body:not(.lib) .libonly{display:none!important}
+
+/* ===================== PORTADA (inicio) ===================== */
+body.home .libonly,body.home .songonly{display:none!important}
+body:not(.home) .homeonly{display:none!important}
+.cover{position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;color:var(--gold);overflow:hidden;
+  background:radial-gradient(ellipse at 50% 42%,#93163a 0%,var(--wine) 58%,#4f0716 100%);
+  padding:calc(30px + env(safe-area-inset-top,0px)) 26px calc(30px + env(safe-area-inset-bottom,0px))}
+.cover::before{content:"";position:absolute;inset:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px));border:2px solid var(--gold);border-radius:8px;pointer-events:none}
+.cover::after{content:"";position:absolute;inset:calc(19px + env(safe-area-inset-top,0px)) 19px calc(19px + env(safe-area-inset-bottom,0px));border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);border-radius:5px;pointer-events:none}
+.corn{position:absolute;width:52px;height:52px;color:var(--gold);z-index:1}
+.corn.c1{top:calc(6px + env(safe-area-inset-top,0px));left:6px}.corn.c2{top:calc(6px + env(safe-area-inset-top,0px));right:6px;transform:scaleX(-1)}
+.corn.c3{bottom:calc(6px + env(safe-area-inset-bottom,0px));left:6px;transform:scaleY(-1)}.corn.c4{bottom:calc(6px + env(safe-area-inset-bottom,0px));right:6px;transform:scale(-1,-1)}
+.cover .top{position:relative;z-index:1;animation:cfade .8s ease-out both}
+.cover .kick{font-size:12.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--gold2)}
+.cover h1{font-family:var(--serif);font-weight:800;font-size:clamp(38px,11vw,72px);line-height:.98;letter-spacing:.02em;margin-top:10px;text-shadow:0 3px 0 rgba(0,0,0,.25);animation:shine 5s ease-in-out infinite}
+.cover h1 .en{display:flex;align-items:center;justify-content:center;gap:14px;font-size:.42em;margin:6px 0}
+.cover h1 .en::before,.cover h1 .en::after{content:"";height:2px;width:min(80px,16vw);background:var(--gold)}
+@keyframes shine{0%,100%{text-shadow:0 3px 0 rgba(0,0,0,.25)}50%{text-shadow:0 3px 0 rgba(0,0,0,.25),0 0 22px rgba(227,196,106,.6)}}
+.cover .stagec{position:relative;z-index:1;width:min(420px,86vw);flex:1;display:flex;align-items:center;justify-content:center;min-height:200px}
+.cover .stagec img{width:100%;height:auto;max-height:42vh;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.3));animation:float 5s ease-in-out infinite}
+@keyframes cfade{from{opacity:0;transform:translateY(14px)}}
+.cover .cn{position:absolute;bottom:10%;color:var(--gold);font-family:serif;font-size:28px;opacity:0;animation:crise 6s linear infinite;pointer-events:none}
+@keyframes crise{0%{opacity:0;transform:translateY(0) rotate(-12deg)}15%{opacity:.85}100%{opacity:0;transform:translateY(-260px) rotate(20deg)}}
+.cover .bottom{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;animation:cfade .8s .25s ease-out both}
+.cover .eso{font-family:var(--serif);font-weight:800;font-size:26px}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.chips span{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid color-mix(in srgb,var(--gold) 50%,transparent);border-radius:99px;padding:4px 9px 4px 5px;font-size:12px;font-weight:600;color:#fff}
+.chips span i{width:14px;height:14px;border-radius:50%;background:var(--c);border:1.5px solid var(--gold)}
+.enter{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--wine);font-weight:800;font-size:19px;letter-spacing:.03em;border-radius:99px;padding:14px 34px;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:pulse 2.2s ease-in-out infinite}
+.enter:active{transform:scale(.96)}
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 0 0 rgba(227,196,106,.55)}60%{box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 0 16px rgba(227,196,106,0)}}
+.cover .inst{font-size:13px;color:var(--gold2);text-decoration:underline;text-underline-offset:3px;background:none}
+@media (min-height:760px){ .cover .kick{font-size:13.5px} }
 
 /* ===================== BIBLIOTECA ===================== */
 .hero{background:linear-gradient(135deg,#8c0a2c,var(--wine) 70%);color:var(--gold);border-bottom:5px solid var(--gold);
@@ -42,7 +76,7 @@ body:not(.lib) .libonly{display:none!important}
 .hero{position:relative;overflow:hidden}
 .hero .hn{position:absolute;bottom:-26px;color:var(--gold);font-family:serif;font-size:20px;opacity:0;animation:hrise 7s linear infinite;pointer-events:none}
 @keyframes hrise{0%{opacity:0;transform:translateY(0) rotate(-12deg)}15%{opacity:.7}100%{opacity:0;transform:translateY(-120px) rotate(18deg)}}
-.hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(20px,5.6vw,30px);letter-spacing:.02em;line-height:1.1}
+.hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(20px,5.6vw,30px);letter-spacing:.02em;line-height:1.1;text-wrap:balance}
 .hero p{margin:3px 0 0;font-size:clamp(10.5px,2.9vw,13px);font-weight:600;letter-spacing:.08em;white-space:nowrap;text-transform:uppercase;color:var(--gold2)}
 .libwrap{max-width:980px;margin:0 auto;padding:22px 16px calc(30px + env(safe-area-inset-bottom,0px))}
 .libwrap h2{font-family:var(--script);font-weight:400;color:var(--wine2);font-size:46px;text-align:center;margin:0 0 14px}
@@ -259,10 +293,28 @@ body:not(.lib) .libonly{display:none!important}
 <body class="lib">
 
 <!-- ===================== BIBLIOTECA ===================== -->
+<!-- ===================== PORTADA ===================== -->
+<section class="cover homeonly" aria-label="Portada">
+  <svg class="corn c1" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg><svg class="corn c2" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg><svg class="corn c3" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg><svg class="corn c4" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg>
+  <div class="top">
+    <div class="kick">Transforma el movimiento</div>
+    <h1>PARTITURAS<span class="en">EN</span>MOVIMIENTO</h1>
+  </div>
+  <div class="stagec">
+    <img src="img/bailarina.webp" alt="Bailarina dorada sobre un pentagrama">
+    <span class="cn" style="left:4%;animation-delay:0s">♪</span><span class="cn" style="left:86%;animation-delay:1.5s">♫</span><span class="cn" style="left:18%;animation-delay:3s;font-size:22px">♩</span><span class="cn" style="left:72%;animation-delay:4.4s;font-size:22px">♪</span>
+  </div>
+  <div class="bottom">
+    <div class="eso">1.º ESO</div>
+    <div class="chips"><span style="--c:#800020"><i></i>Amor</span><span style="--c:#7d9470"><i></i>Tristeza</span><span style="--c:#1a1a1a"><i></i>Ira</span><span style="--c:#d4af37"><i></i>Alegría</span></div>
+    <a class="enter" href="#canciones">Empezar a bailar <span aria-hidden="true">›</span></a>
+    <button class="inst" id="coverInstall" hidden>📲 Instalar la app en el móvil</button>
+  </div>
+</section>
+
 <header class="hero libonly">
   <div class="hin">
     <img src="img/logo-dorado.png" alt="">
-    <span class="hn" style="left:58%;animation-delay:0s">♪</span><span class="hn" style="left:74%;animation-delay:2.3s">♫</span><span class="hn" style="left:90%;animation-delay:4.6s">♩</span>
     <div><h1>Partituras en Movimiento</h1><p>Transforma el movimiento · 1.º ESO</p></div>
   </div>
 </header>
@@ -280,7 +332,7 @@ body:not(.lib) .libonly{display:none!important}
 <!-- ===================== CANCIÓN ===================== -->
 <header class="shead songonly">
   <div class="in">
-    <a class="back" href="#inicio" aria-label="Volver a las canciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a class="back" href="#canciones" aria-label="Volver a las canciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
     <div class="tt"><h1 id="songTitle"></h1><div class="meta" id="songMeta"></div></div>
     <button class="vid" id="vid" aria-label="Ver el vídeo">▶ Vídeo</button>
   </div>
@@ -322,7 +374,6 @@ body:not(.lib) .libonly{display:none!important}
       <button class="tog" id="loop" aria-pressed="false">🔁 Repetir paso</button>
       <button class="tog" id="ci" aria-pressed="true">⏱ Cuenta antes</button>
     </div>
-    <p class="hint" id="hint"></p>
   </section>
 
   <!-- PARTITURA Y LETRA -->
@@ -490,7 +541,6 @@ function loadSong(song){
   $('stage').classList.toggle('fig', !!song.figures);
   $('beats').hidden = !!song.figures; $('hold').hidden = !song.figures;
   $('loop').innerHTML = song.figures ? '🔁 Repetir figura' : '🔁 Repetir paso';
-  $('hint').textContent = `Añade el MP3 (la canción entera o solo el fragmento ${song.fragment}) y los pasos irán solos con la música. Se guarda solo en este dispositivo.`;
   STEPS.forEach(s => { const im = new Image(); im.src = s.img; });
   // línea de tiempo
   tl.querySelectorAll('.tk').forEach(e=>e.remove());
@@ -787,7 +837,8 @@ function showView(v){
 tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
 
 function route(){
-  const song = SONGS.find(s=>s.id===location.hash.slice(1));
+  const h = location.hash.slice(1), song = SONGS.find(s=>s.id===h);
+  document.body.classList.toggle('home', !song && h!=='canciones');
   if (song){ document.body.classList.remove('lib'); if (SONG!==song){ closeVideo(); loadSong(song); } }
   else { if (st.playing) pause(); closeVideo(); document.body.classList.add('lib'); document.title = 'Partituras en Movimiento'; }
   window.scrollTo(0,0);
@@ -799,8 +850,9 @@ requestAnimationFrame(tick);
 
 /* ===================== app instalable ===================== */
 let deferredInstall = null;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; $('installBox').hidden = false; });
-$('installBtn').onclick = async () => { if (!deferredInstall) return; deferredInstall.prompt(); try { await deferredInstall.userChoice; } catch(e) {} deferredInstall = null; $('installBox').hidden = true; };
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; $('installBox').hidden = false; $('coverInstall').hidden = false; });
+$('coverInstall').onclick = () => $('installBtn').click();
+$('installBtn').onclick = async () => { if (!deferredInstall) return; deferredInstall.prompt(); try { await deferredInstall.userChoice; } catch(e) {} deferredInstall = null; $('installBox').hidden = true; $('coverInstall').hidden = true; };
 if ('serviceWorker' in navigator && location.protocol === 'https:') { navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 </script>
 </body>
