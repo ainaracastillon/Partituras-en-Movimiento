@@ -62,8 +62,8 @@ body:not(.home) .homeonly{display:none!important}
 .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .chips span{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid color-mix(in srgb,var(--gold) 50%,transparent);border-radius:99px;padding:4px 9px 4px 5px;font-size:12px;font-weight:600;color:#fff}
 .chips span i{width:14px;height:14px;border-radius:50%;background:var(--c);border:1.5px solid var(--gold)}
-.enter{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--wine);font-weight:800;font-size:19px;letter-spacing:.03em;border-radius:99px;padding:14px 34px;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:pulse 2.2s ease-in-out infinite}
-.enter:active{transform:scale(.96)}
+.startbtn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--wine);font-weight:800;font-size:19px;letter-spacing:.03em;border-radius:99px;padding:14px 34px;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:pulse 2.2s ease-in-out infinite}
+.startbtn:active{transform:scale(.96)}
 @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 0 0 rgba(227,196,106,.55)}60%{box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 0 16px rgba(227,196,106,0)}}
 .cover .inst{font-size:13px;color:var(--gold2);text-decoration:underline;text-underline-offset:3px;background:none}
 @media (min-height:760px){ .cover .kick{font-size:13.5px} }
@@ -325,7 +325,7 @@ body:not(.home) .homeonly{display:none!important}
   <div class="bottom">
     <div class="eso">1.º ESO</div>
     <div class="chips"><span style="--c:#800020"><i></i>Amor</span><span style="--c:#7d9470"><i></i>Tristeza</span><span style="--c:#1a1a1a"><i></i>Ira</span><span style="--c:#d4af37"><i></i>Alegría</span></div>
-    <a class="enter" href="#canciones">Empezar a bailar <span aria-hidden="true">›</span></a>
+    <a class="startbtn" href="#canciones">Empezar a bailar <span aria-hidden="true">›</span></a>
     <button class="inst" id="coverInstall" hidden>📲 Instalar la app en el móvil</button>
   </div>
 </section>
