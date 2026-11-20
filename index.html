@@ -291,25 +291,21 @@ body:not(.home) .homeonly{display:none!important}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 @media (hover:none) and (pointer:coarse){ :root{--top:calc(env(safe-area-inset-top,0px) + 34px)} }
-/* Ordenador: la biblioteca ocupa toda la pantalla, con tarjetas grandes */
+/* Ordenador: tarjetas de tamaño medio, centradas en la pantalla */
 @media (min-width:900px){
   body.lib:not(.home){display:flex;flex-direction:column}
-  .hero .hin{max-width:1400px}
-  .libwrap{max-width:1400px;width:100%;flex:1;display:flex;flex-direction:column;padding:28px 32px 32px}
-  .songs{flex:1;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;align-items:stretch}
-  .song{min-height:min(560px,calc(100dvh - 190px))}
-  .song .pics{flex:1;height:auto;min-height:190px;padding:26px 18px 18px;align-items:center;position:relative}
-  .song .pics img{height:82%;width:88%;max-width:88%;object-fit:contain;position:absolute;left:6%;top:7%}
+  .hero .hin{max-width:1200px}
+  .libwrap{max-width:1200px;width:100%;flex:1;display:flex;flex-direction:column;justify-content:center;padding:28px 32px 36px}
+  .songs{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+  .song .pics{height:200px;padding:18px 12px 12px;align-items:center;position:relative}
+  .song .pics img{height:80%;width:88%;max-width:88%;object-fit:contain;position:absolute;left:6%;top:8%}
   .song .pics img:not(:first-child){display:none}
-  .song .pics::after{content:"";position:absolute;left:22%;right:22%;bottom:16px;height:10px;border-radius:50%;background:radial-gradient(rgba(29,20,24,.16),transparent 70%)}
+  .song .pics::after{content:"";position:absolute;left:24%;right:24%;bottom:10px;height:8px;border-radius:50%;background:radial-gradient(rgba(29,20,24,.16),transparent 70%)}
   .song.fig .pics::after{display:none}
-  .song .band{font-size:13.5px;padding:10px 16px}
-  .song .info{flex:none;padding:14px 18px 18px}
-  .song .st{font-size:24px}
-  .song .go{margin-top:6px;padding:10px 0;font-size:16px}
+  .song .st{font-size:21px}
   .install{max-width:none;margin:18px 0 0}
 }
-@media (min-width:900px) and (max-width:1180px){ .songs{grid-template-columns:repeat(2,minmax(0,1fr))} .song{min-height:340px} }
+@media (min-width:900px) and (max-width:1100px){ .songs{grid-template-columns:repeat(2,minmax(0,1fr))} }
 </style>
 </head>
 <body class="lib">
