@@ -396,13 +396,28 @@ function audioSync(){ if (!SONG) return; try { audio.currentTime = audioOffset +
 function audioStart(){ if (!hasAudio()) return; audio.playbackRate = st.speed; try{ audio.preservesPitch = true; }catch(e){} audioSync(); audio.play().catch(()=>{}); }
 function audioStop(){ try { audio.pause(); } catch(e) {} }
 function setAudio(blob){
-  audioStop(); if (audioUrl) URL.revokeObjectURL(audioUrl);
+  audioStop(); if (audioUrl && audioUrl.startsWith('blob:')) URL.revokeObjectURL(audioUrl);
   audioUrl = blob ? URL.createObjectURL(blob) : null;
   audioOffset = SONG ? (SONG.offset||0) : 0; audio.src = audioUrl || '';
-  $('addMusic').hidden = !!audioUrl; $('hasMusic').hidden = !audioUrl;
+  $('addMusic').hidden = !!audioUrl; $('hasMusic').hidden = !audioUrl; $('delMusic').hidden = false;
   $('useMusic').setAttribute('aria-pressed', String(useAudio));
 }
-async function loadAudio(id){ setAudio(null); const b = await idb.get('audio.'+id); if (b && SONG && SONG.id===id) setAudio(b); }
+let audioIsServer = false;
+async function loadAudio(id){
+  setAudio(null); audioIsServer = false;
+  const b = await idb.get('audio.'+id);
+  if (b && SONG && SONG.id===id) { setAudio(b); return; }
+  // Si en la web hay un archivo audio/<id>.mp3, se usa automáticamente.
+  try {
+    const url = `audio/${id}.mp3`, r = await fetch(url, {method:'HEAD', cache:'no-store'});
+    if (r.ok && (r.headers.get('content-type')||'').includes('audio') && SONG && SONG.id===id) {
+      audioStop(); if (audioUrl && audioUrl.startsWith('blob:')) URL.revokeObjectURL(audioUrl);
+      audioUrl = url; audioOffset = SONG.offset||0; audio.src = url; audioIsServer = true;
+      $('addMusic').hidden = true; $('hasMusic').hidden = false; $('delMusic').hidden = true;
+      $('useMusic').setAttribute('aria-pressed', String(useAudio));
+    }
+  } catch(e) {}
+}
 
 /* ===================== audio ===================== */
 let ac = null;
