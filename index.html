@@ -26,7 +26,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
 html{background-color:var(--wine)}
-body{background-color:var(--wine);background-image:linear-gradient(var(--cream),var(--cream));color:var(--ink);font-family:var(--font);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+body{min-height:100vh;min-height:100dvh;background-color:var(--wine);background-image:linear-gradient(var(--cream),var(--cream));color:var(--ink);font-family:var(--font);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 a{color:inherit;text-decoration:none}
 button:focus-visible,a:focus-visible,label:focus-within{outline:3px solid var(--gold);outline-offset:2px}
@@ -79,10 +79,11 @@ body:not(.home) .homeonly{display:none!important}
 @keyframes hrise{0%{opacity:0;transform:translateY(0) rotate(-12deg)}15%{opacity:.7}100%{opacity:0;transform:translateY(-120px) rotate(18deg)}}
 .hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(20px,5.6vw,30px);letter-spacing:.02em;line-height:1.1;text-wrap:balance}
 .hero p{margin:3px 0 0;font-size:clamp(10.5px,2.9vw,13px);font-weight:600;letter-spacing:.08em;white-space:nowrap;text-transform:uppercase;color:var(--gold2)}
-.libwrap{max-width:980px;margin:0 auto;padding:22px 16px calc(30px + env(safe-area-inset-bottom,0px))}
+.libwrap{max-width:980px;margin:0 auto;padding:20px 16px calc(30px + env(safe-area-inset-bottom,0px))}
 .libwrap h2{font-family:var(--script);font-weight:400;color:var(--wine2);font-size:46px;text-align:center;margin:0 0 14px}
 .libwrap .sub{text-align:center;color:var(--muted);margin:0 auto 18px;max-width:520px;font-size:15px;line-height:1.45}
 .songs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+
 .song{position:relative;display:flex;flex-direction:column;background:var(--paper);border:2px solid var(--gold);border-radius:18px;overflow:hidden;box-shadow:0 2px 0 var(--gold),0 10px 24px rgba(111,10,33,.10);transition:transform .15s,box-shadow .15s}
 .song:hover{transform:translateY(-3px);box-shadow:0 2px 0 var(--gold),0 16px 30px rgba(111,10,33,.16)}
 .song .band{background:var(--e);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 14px;font-weight:700;font-size:12.5px;letter-spacing:.1em;white-space:nowrap;text-transform:uppercase}
@@ -290,6 +291,25 @@ body:not(.home) .homeonly{display:none!important}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 @media (hover:none) and (pointer:coarse){ :root{--top:calc(env(safe-area-inset-top,0px) + 34px)} }
+/* Ordenador: la biblioteca ocupa toda la pantalla, con tarjetas grandes */
+@media (min-width:900px){
+  body.lib:not(.home){display:flex;flex-direction:column}
+  .hero .hin{max-width:1400px}
+  .libwrap{max-width:1400px;width:100%;flex:1;display:flex;flex-direction:column;padding:28px 32px 32px}
+  .songs{flex:1;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;align-items:stretch}
+  .song{min-height:min(560px,calc(100dvh - 190px))}
+  .song .pics{flex:1;height:auto;min-height:190px;padding:26px 18px 18px;align-items:center;position:relative}
+  .song .pics img{height:82%;width:88%;max-width:88%;object-fit:contain;position:absolute;left:6%;top:7%}
+  .song .pics img:not(:first-child){display:none}
+  .song .pics::after{content:"";position:absolute;left:22%;right:22%;bottom:16px;height:10px;border-radius:50%;background:radial-gradient(rgba(29,20,24,.16),transparent 70%)}
+  .song.fig .pics::after{display:none}
+  .song .band{font-size:13.5px;padding:10px 16px}
+  .song .info{flex:none;padding:14px 18px 18px}
+  .song .st{font-size:24px}
+  .song .go{margin-top:6px;padding:10px 0;font-size:16px}
+  .install{max-width:none;margin:18px 0 0}
+}
+@media (min-width:900px) and (max-width:1180px){ .songs{grid-template-columns:repeat(2,minmax(0,1fr))} .song{min-height:340px} }
 </style>
 </head>
 <body class="lib">
@@ -322,7 +342,6 @@ body:not(.home) .homeonly{display:none!important}
 </header>
 
 <main class="libwrap libonly">
-  <h2>Cuatro emociones</h2>
   <div class="songs" id="songs"></div>
   <div class="install" id="installBox" hidden>
     <span class="ico">📲</span>
