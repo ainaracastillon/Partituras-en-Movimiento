@@ -218,6 +218,7 @@ body:not(.lib) .libonly{display:none!important}
 .tabs button svg{width:24px;height:24px}
 .tabs button[aria-selected="true"]{background:var(--gold);color:var(--wine)}
 
+@media (max-width:440px){ .scoretools .where{display:none} .scoretools .mini{margin-right:auto} }
 @media (min-width:560px){ .score{grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media (min-height:880px){ .stage{height:clamp(230px,40vh,520px)} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
@@ -312,6 +313,7 @@ body:not(.lib) .libonly{display:none!important}
       <div class="where" id="scoreWhere"></div>
       <button class="tog" id="pasteBtn" aria-label="Pegar letra">📋 Letra</button>
       <label class="tog" id="pdfBtn">📄 PDF<input type="file" id="pdfIn" accept="application/pdf,.pdf" hidden></label>
+      <button class="tog" id="dlBtn" aria-label="Descargar la letra como archivo para subir">⬇️ .txt</button>
       <button class="tog" id="printBtn" aria-label="Imprimir">🖨️</button>
     </div>
     <div class="seg modes" id="modes" role="group" aria-label="Qué ver"><button data-m="score" aria-pressed="true">🎼 Partitura</button><button data-m="full" aria-pressed="false">📝 Letra completa</button></div>
@@ -492,7 +494,7 @@ function loadSong(song){
   // partitura y letra
   LYR = store.get('lyr.'+song.id, {});
   $('instr').hidden = !song.instrumental;
-  $('pasteBtn').hidden = $('modes').hidden = !!song.instrumental;
+  $('pasteBtn').hidden = $('modes').hidden = $('dlBtn').hidden = !!song.instrumental;
   $('letraIntro').textContent = song.instrumental
     ? 'Añade la partitura en PDF para tenerla a mano mientras ensayas. Se guarda solo en este dispositivo.'
     : 'Cada casilla es un paso, con el pentagrama del grupo 1 y del grupo 2 y su línea de letra. Pega la letra o escríbela, y añade tu partitura en PDF: todo se guarda solo en este dispositivo.';
@@ -668,6 +670,15 @@ function setMode(m){
 }
 $('modes').addEventListener('click', e => { const b=e.target.closest('button'); if(b) setMode(b.dataset.m); });
 $('lyfull').addEventListener('click', e => { const l=e.target.closest('.ll'); if(l) seekStep(+l.dataset.i); });
+$('dlBtn').onclick = async () => {
+  const txt = STEPS.map(s => `${pad(s.n)} (${mmss(s.t)}): ${(LYR[s.i]||'').trim()}`).join('\n') + '\n';
+  const name = `${SONG.id}.txt`;
+  try {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain;charset=utf-8'}));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  } catch(e) {}
+  try { await navigator.clipboard.writeText(txt); } catch(e) {}
+};
 $('printBtn').onclick = () => { try { window.print(); } catch(e) {} };
 
 function openPaste(){ $('pasteTxt').value = store.get('lyrRaw.'+SONG.id, ''); $('pasteFrom').value = 1; $('pasteFrom').max = STEPS.length; $('pasteMsg').textContent=''; $('pasteDlg').hidden=false; setTimeout(()=>$('pasteTxt').focus(),50); }
