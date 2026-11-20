@@ -179,11 +179,34 @@ body:not(.lib) .libonly{display:none!important}
 
 /* partitura (imágenes) */
 .sheet{display:flex;flex-direction:column;gap:14px}
-/* En el ordenador, las partituras se ven de dos en dos, como un libro abierto */
+/* En el ordenador, las partituras se ven de dos en dos, como un libro abierto, y caben sin hacer scroll */
+.sheetnav{display:none}
 @media (min-width:900px){
-  body.vletra .app,body.vletra .shead .in{max-width:1240px}
-  body.vletra .sheet{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+  body.vletra .app,body.vletra .shead .in{max-width:1400px}
+  body.vletra .app{padding-top:10px;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  body.vletra #v-letra .vh{display:none}
+  body.vletra .sheet{display:flex;flex-direction:row;justify-content:center;align-items:flex-start;gap:16px;height:calc(100dvh - 190px)}
+  body.vletra .sheet a{height:100%;display:flex;flex-direction:column;padding:6px;min-width:0}
+  body.vletra .sheet a[hidden]{display:none}
+  body.vletra .sheet img{flex:1;min-height:0;width:auto;max-width:100%;height:100%;object-fit:contain;margin:0 auto}
+  body.vletra .sheet .pn{padding:4px 2px 0}
+  body.vletra .sheetnav{display:flex;justify-content:center;align-items:center;gap:14px;font-weight:600;color:var(--muted);font-size:14px;margin-top:-2px}
+  body.vletra .sheetnav[hidden]{display:none}
+  .sheetnav button{width:38px;height:38px;border-radius:50%;background:var(--paper);border:2px solid var(--gold);color:var(--wine2);font-size:20px;font-weight:800;line-height:1}
+  .sheetnav button:disabled{opacity:.35;cursor:default}
 }
+
+/* vídeo dentro de la app */
+.vpop{position:fixed;z-index:30;right:20px;bottom:96px;width:min(560px,calc(100vw - 24px));background:var(--wine2);border:3px solid var(--gold);border-radius:18px;box-shadow:0 18px 50px rgba(40,8,18,.45);overflow:hidden;animation:vin .25s cubic-bezier(.3,1.3,.5,1)}
+@keyframes vin{from{opacity:0;transform:translateY(20px) scale(.95)}}
+.vpop .vbar{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;color:var(--gold2);font-weight:700;font-size:14px;cursor:move;user-select:none;touch-action:none}
+.vpop .vbar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vpop .vbar button,.vpop .vbar a{flex:none;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer}
+.vpop .vbox{position:relative;aspect-ratio:16/9;background:#000}
+.vpop iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vpop.big{left:50%!important;top:50%!important;right:auto;bottom:auto;width:min(1100px,calc(100vw - 32px));transform:translate(-50%,-50%);animation:none}
+.vshade{position:fixed;inset:0;z-index:29;background:rgba(40,8,18,.55)}
+@media (max-width:640px){ .vpop{left:12px;right:12px;width:auto;bottom:auto;top:calc(84px + env(safe-area-inset-top,0px))} .vpop.big{transform:none;left:12px!important;right:12px;top:calc(84px + env(safe-area-inset-top,0px))!important;width:auto} }
 .sheet a{display:block;background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:8px;box-shadow:0 8px 20px rgba(111,10,33,.08)}
 .sheet img{display:block;width:100%;height:auto;border-radius:8px}
 .sheet .pn{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600;padding:6px 4px 0}
@@ -237,7 +260,7 @@ body:not(.lib) .libonly{display:none!important}
   <div class="in">
     <a class="back" href="#inicio" aria-label="Volver a las canciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
     <div class="tt"><h1 id="songTitle"></h1><div class="meta" id="songMeta"></div></div>
-    <a class="vid" id="vid" href="#" target="_blank" rel="noopener">▶ Vídeo</a>
+    <button class="vid" id="vid" aria-label="Ver el vídeo">▶ Vídeo</button>
   </div>
 </header>
 
@@ -284,11 +307,21 @@ body:not(.lib) .libonly{display:none!important}
   <section class="view" id="v-letra" role="tabpanel" aria-labelledby="t-letra" hidden>
     <h2 class="vh">Partitura y letra</h2>
     <div id="sheet" class="sheet"></div>
+    <div class="sheetnav" id="sheetNav" hidden><button id="shPrev" aria-label="Páginas anteriores">‹</button><span id="shInfo"></span><button id="shNext" aria-label="Páginas siguientes">›</button></div>
     <div class="sheetempty" id="sheetEmpty" hidden><b>Muy pronto</b>La partitura de esta canción aparecerá aquí.</div>
   </section>
 
 </div>
 
+
+<div class="vshade" id="vshade" hidden></div>
+<div class="vpop" id="vpop" hidden role="dialog" aria-label="Vídeo de la canción">
+  <div class="vbar" id="vbar"><span id="vtitle">Vídeo</span>
+    <button id="vbig" aria-label="Ampliar el vídeo">⤢</button>
+    <a id="vext" href="#" target="_blank" rel="noopener" aria-label="Abrir en YouTube">↗</a>
+    <button id="vclose" aria-label="Cerrar el vídeo">✕</button></div>
+  <div class="vbox"><iframe id="vframe" title="Vídeo de la canción" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+</div>
 
 <nav class="tabs songonly" role="tablist">
   <button role="tab" id="t-bailar" data-v="bailar" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="4.5" r="2.3"/><path d="M12 7v7M12 9l-5 3M12 9l5-4M12 14l-4 7M12 14l4 6"/></svg>Bailar</button>
@@ -303,14 +336,14 @@ body:not(.lib) .libonly{display:none!important}
 const every2 = Array.from({length:36}, (_,i) => 1 + i*2);
 const SONGS = [
   { id:'superestrella', title:'Superestrella', artist:'Aitana', emotion:'Amor', color:'#800020', style:'Zumba',
-    fragment:'0:14 – 1:14', offset:14, video:'https://www.youtube.com/results?search_query=Aitana+Superestrella', times:every2, end:73 },
+    fragment:'0:14 – 1:14', offset:14, video:'https://www.youtube.com/watch?v=vz_vU53JvvI', yt:'vz_vU53JvvI', times:every2, end:73 },
   { id:'broken-heart', title:'Me and My Broken Heart', artist:'Rixton', emotion:'Tristeza', color:'#7d9470', style:'Baile en pareja',
-    fragment:'1:27 – 2:35', offset:87, video:'https://www.youtube.com/results?search_query=Rixton+Me+and+My+Broken+Heart', times:every2, end:73 },
+    fragment:'1:27 – 2:35', offset:87, video:'https://www.youtube.com/watch?v=7JJfJgyHYwU', yt:'7JJfJgyHYwU', times:every2, end:73 },
   { id:'so-what', title:'So What', artist:'P!nk', emotion:'Ira', color:'#1a1a1a', style:'Baile',
-    fragment:'0:00 – 1:08', offset:0, video:'https://www.youtube.com/watch?v=ywFM3MCRKJ8',
+    fragment:'0:00 – 1:08', offset:0, video:'https://www.youtube.com/watch?v=ywFM3MCRKJ8', yt:'ywFM3MCRKJ8',
     times:[1,2,4,6,8,10,12,13,15,17,19,21,23,25,26,28,30,32,34,36,38,39,41,43,45,47,49,50,52,54,56,58,60,62,63,65], end:67 },
   { id:'piratas', title:'Piratas del Caribe', artist:'Klaus Badelt · Hans Zimmer', emotion:'Alegría', color:'#b8921f', style:'Acrosport',
-    fragment:'0:00 – 1:10', offset:0, video:'https://www.youtube.com/results?search_query=Piratas+del+Caribe+He%27s+a+Pirate', figures:true, instrumental:true,
+    fragment:'0:00 – 1:10', offset:0, video:'https://www.youtube.com/watch?v=BuYf0taXoNw', yt:'BuYf0taXoNw', figures:true, instrumental:true,
     times:[0,8,16,18,27,34,49], ranges:['00:00 – 00:07','00:08 – 00:15','00:16 – 00:17','00:18 – 00:27','00:27 – 00:33','00:34 – 00:48','00:49 – 01:00'], end:61 }
 ];
 
@@ -583,7 +616,21 @@ async function loadSheet(id){
   if (!SONG || SONG.id!==id) return;
   $('sheet').innerHTML = pages.map((u,k)=>`<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="Partitura de ${esc(SONG.title)}, página ${k+1}"><div class="pn"><span>Página ${k+1} de ${pages.length}</span><span>Toca para ampliar ↗</span></div></a>`).join('');
   $('sheetEmpty').hidden = pages.length>0;
+  sheetPair = 0; showPair();
 }
+// En el ordenador se ven dos páginas a la vez; con más de dos, se pasa de pareja con ‹ ›.
+let sheetPair = 0;
+const wide = () => matchMedia('(min-width:900px)').matches;
+function showPair(){
+  const items = [...$('sheet').querySelectorAll('a')], pairs = Math.ceil(items.length/2);
+  items.forEach((a,k) => a.hidden = wide() && Math.floor(k/2)!==sheetPair);
+  $('sheetNav').hidden = !(wide() && pairs>1);
+  $('shInfo').textContent = `Páginas ${sheetPair*2+1}–${Math.min(items.length, sheetPair*2+2)} de ${items.length}`;
+  $('shPrev').disabled = sheetPair<=0; $('shNext').disabled = sheetPair>=pairs-1;
+}
+$('shPrev').onclick = () => { sheetPair = Math.max(0, sheetPair-1); showPair(); };
+$('shNext').onclick = () => { sheetPair++; showPair(); };
+addEventListener('resize', showPair);
 
 /* almacenamiento en este dispositivo (música) */
 const idb = (() => {
@@ -600,13 +647,31 @@ $('audioIn').addEventListener('change', async e => {
 $('useMusic').onclick = () => { useAudio = !useAudio; $('useMusic').setAttribute('aria-pressed', String(useAudio)); if (!useAudio) audioStop(); else if (st.playing && st.ci===null) audioStart(); };
 $('delMusic').onclick = async () => { await idb.del('audio.'+SONG.id); setAudio(null); };
 
-/* vídeo en ventana emergente */
-$('vid').addEventListener('click', e => {
-  const w = Math.min(640, screen.availWidth - 40), h = Math.round(w*9/16) + 120;
-  let pop = null;
-  try { pop = window.open($('vid').href, 'pem_video', `popup=yes,width=${w},height=${h},left=${Math.max(0, screen.availWidth-w-20)},top=40`); } catch(err) {}
-  if (pop) { e.preventDefault(); try { pop.focus(); } catch(err) {} }
-});
+/* vídeo dentro de la app: ventana flotante que se puede mover, ampliar y cerrar */
+function openVideo(){
+  if (!SONG || !SONG.yt) return;
+  if (st.playing) pause();                       // que no suenen a la vez la app y el vídeo
+  const start = SONG.offset || 0;
+  $('vtitle').textContent = `${SONG.title} · desde ${m_ss(start)}`;
+  $('vext').href = `https://www.youtube.com/watch?v=${SONG.yt}&t=${start}s`;
+  $('vframe').src = `https://www.youtube-nocookie.com/embed/${SONG.yt}?start=${start}&autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+  const v = $('vpop'); v.hidden = false; v.classList.remove('big'); v.style.left = v.style.top = ''; $('vshade').hidden = true;
+}
+function closeVideo(){ $('vpop').hidden = true; $('vshade').hidden = true; $('vframe').src = 'about:blank'; }
+$('vid').onclick = openVideo;
+$('vclose').onclick = closeVideo;
+$('vshade').onclick = () => { $('vpop').classList.remove('big'); $('vshade').hidden = true; };
+$('vbig').onclick = () => { const v=$('vpop'); const big = !v.classList.contains('big'); v.classList.toggle('big', big); $('vshade').hidden = !big; if (!big){ v.style.left = v.style.top = ''; } };
+document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('vpop').hidden) closeVideo(); });
+(() => { // arrastrar la ventana por su barra
+  const v = $('vpop'), bar = $('vbar'); let sx=0, sy=0, ox=0, oy=0, drag=false;
+  bar.addEventListener('pointerdown', e => { if (e.target.closest('button,a') || v.classList.contains('big') || innerWidth<=640) return;
+    const r = v.getBoundingClientRect(); drag=true; sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top; bar.setPointerCapture(e.pointerId); });
+  bar.addEventListener('pointermove', e => { if (!drag) return;
+    const x = Math.max(0, Math.min(innerWidth - v.offsetWidth, ox + e.clientX - sx)), y = Math.max(0, Math.min(innerHeight - 60, oy + e.clientY - sy));
+    v.style.left = x+'px'; v.style.top = y+'px'; v.style.right = 'auto'; v.style.bottom = 'auto'; });
+  bar.addEventListener('pointerup', () => drag=false); bar.addEventListener('pointercancel', () => drag=false);
+})();
 
 /* ===================== pestañas y navegación ===================== */
 const tabs = [...document.querySelectorAll('.tabs button')];
@@ -620,8 +685,8 @@ tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
 
 function route(){
   const song = SONGS.find(s=>s.id===location.hash.slice(1));
-  if (song){ document.body.classList.remove('lib'); if (SONG!==song) loadSong(song); }
-  else { if (st.playing) pause(); document.body.classList.add('lib'); document.title = 'Partituras en Movimiento'; }
+  if (song){ document.body.classList.remove('lib'); if (SONG!==song){ closeVideo(); loadSong(song); } }
+  else { if (st.playing) pause(); closeVideo(); document.body.classList.add('lib'); document.title = 'Partituras en Movimiento'; }
   window.scrollTo(0,0);
 }
 window.addEventListener('hashchange', route);
