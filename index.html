@@ -179,6 +179,11 @@ body:not(.lib) .libonly{display:none!important}
 
 /* partitura (imágenes) */
 .sheet{display:flex;flex-direction:column;gap:14px}
+/* En el ordenador, las partituras se ven de dos en dos, como un libro abierto */
+@media (min-width:900px){
+  body.vletra .app,body.vletra .shead .in{max-width:1240px}
+  body.vletra .sheet{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+}
 .sheet a{display:block;background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:8px;box-shadow:0 8px 20px rgba(111,10,33,.08)}
 .sheet img{display:block;width:100%;height:auto;border-radius:8px}
 .sheet .pn{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600;padding:6px 4px 0}
@@ -608,6 +613,7 @@ const tabs = [...document.querySelectorAll('.tabs button')];
 function showView(v){
   tabs.forEach(t=>t.setAttribute('aria-selected', String(t.dataset.v===v)));
   ['bailar','letra'].forEach(n=>$('v-'+n).hidden = n!==v);
+  document.body.classList.toggle('vletra', v==='letra');
   window.scrollTo(0,0);
 }
 tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
