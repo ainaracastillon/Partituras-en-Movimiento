@@ -37,7 +37,11 @@ body:not(.lib) .libonly{display:none!important}
 .hero{background:linear-gradient(135deg,#8c0a2c,var(--wine) 70%);color:var(--gold);border-bottom:5px solid var(--gold);
   padding:calc(14px + env(safe-area-inset-top,0px)) 18px 14px}
 .hero .hin{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:14px}
-.hero img{width:clamp(58px,16vw,76px);height:auto;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.hero img{width:clamp(58px,16vw,76px);height:auto;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+.hero{position:relative;overflow:hidden}
+.hero .hn{position:absolute;bottom:-26px;color:var(--gold);font-family:serif;font-size:20px;opacity:0;animation:hrise 7s linear infinite;pointer-events:none}
+@keyframes hrise{0%{opacity:0;transform:translateY(0) rotate(-12deg)}15%{opacity:.7}100%{opacity:0;transform:translateY(-120px) rotate(18deg)}}
 .hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(20px,5.6vw,30px);letter-spacing:.02em;line-height:1.1}
 .hero p{margin:3px 0 0;font-size:clamp(10.5px,2.9vw,13px);font-weight:600;letter-spacing:.08em;white-space:nowrap;text-transform:uppercase;color:var(--gold2)}
 .libwrap{max-width:980px;margin:0 auto;padding:22px 16px calc(30px + env(safe-area-inset-bottom,0px))}
@@ -49,7 +53,13 @@ body:not(.lib) .libonly{display:none!important}
 .song .band{background:var(--e);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 14px;font-weight:700;font-size:12.5px;letter-spacing:.1em;white-space:nowrap;text-transform:uppercase}
 .song .band b{font-weight:800}
 .song .pics{display:flex;justify-content:center;align-items:flex-end;gap:8px;height:128px;padding:14px 10px 6px;background:linear-gradient(var(--paper),color-mix(in srgb,var(--e) 7%,var(--paper)))}
-.song .pics img{height:100%;width:auto;max-width:31%;object-fit:contain}
+.song .pics img{height:100%;width:auto;max-width:31%;object-fit:contain;transform-origin:50% 95%;animation:dance .9s ease-in-out infinite alternate}
+.song .pics img:nth-child(2){animation-delay:-.3s} .song .pics img:nth-child(3){animation-delay:-.6s}
+.song.fig .pics img{animation:breathe 2.4s ease-in-out infinite}
+@keyframes dance{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-7px) rotate(3deg)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.song .go{transition:background .2s,letter-spacing .2s}
+.song:hover .go{background:var(--wine);letter-spacing:.1em}
 .song.fig .pics img{max-width:100%}
 .song .info{padding:10px 16px 16px;display:flex;flex-direction:column;gap:2px;flex:1}
 .song .st{font-weight:800;font-size:21px;line-height:1.1;text-transform:uppercase;letter-spacing:.01em}
@@ -79,12 +89,29 @@ body:not(.lib) .libonly{display:none!important}
 /* escenario */
 .stage{position:relative;background:var(--paper);border:2px solid var(--gold);border-radius:20px;height:clamp(230px,37vh,460px);display:grid;place-items:center;overflow:hidden}
 .stage .floor{position:absolute;left:12%;right:12%;bottom:13%;height:2px;background:var(--rule)}
-.stage .pic{max-height:74%;max-width:84%;object-fit:contain;transition:transform .09s}
+.stage{transition:box-shadow .25s}
+.stage::before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--gold) 30%,transparent) 0,transparent 42%);opacity:.35;pointer-events:none}
+.stage.playing::before{animation:spot 4s ease-in-out infinite}
+@keyframes spot{0%,100%{transform:translateX(-6%)}50%{transform:translateX(6%)}}
+.stage.flash{box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 70%,transparent),0 0 30px color-mix(in srgb,var(--e) 40%,transparent)}
+.stage .layer{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.stage .pic{max-height:74%;max-width:84%;object-fit:contain;transform-origin:50% 92%;will-change:transform,opacity}
+.stage .shadow{position:absolute;left:35%;width:30%;bottom:12.2%;height:10px;border-radius:50%;background:radial-gradient(rgba(29,20,24,.22),transparent 70%);will-change:transform}
+.stage.fig .shadow{display:none}
+.notes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.notes span{position:absolute;bottom:-30px;font-size:24px;color:var(--gold);opacity:0;font-family:serif}
+.stage.playing .notes span{animation:rise 3.6s linear infinite}
+@keyframes rise{0%{transform:translateY(0) rotate(-10deg);opacity:0}12%{opacity:.9}80%{opacity:.6}100%{transform:translateY(-330px) rotate(14deg);opacity:0}}
+.spark{position:absolute;width:16px;height:16px;pointer-events:none;color:var(--gold);opacity:0}
+.spark.go{animation:spark .55s ease-out}
+@keyframes spark{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.7) rotate(45deg)}}
 .stage.fig .pic{max-height:80%;max-width:92%}
-.stage .pic.enter{animation:enter .28s ease-out}
-@keyframes enter{from{opacity:.25;transform:scale(.94)}to{opacity:1;transform:none}}
+.stage .pic.enter{animation:enter .32s cubic-bezier(.3,1.4,.5,1)}
+@keyframes enter{from{opacity:.3;transform:scale(.86) rotate(-3deg)}}
 .badge{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;font-variant-numeric:tabular-nums}
 .badge i{font-style:normal;background:var(--wine2);color:#fff;border-radius:9px;min-width:34px;height:30px;display:grid;place-items:center;font-size:14px;padding:0 6px}
+.badge i.bump{animation:bump .35s cubic-bezier(.3,1.8,.5,1)}
+@keyframes bump{from{transform:scale(1.5) rotate(-8deg)}}
 .pg{position:absolute;right:12px;top:10px;font-size:12px;color:var(--muted);font-weight:600}
 .ready{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:color-mix(in srgb,var(--paper) 86%,transparent)}
 .ready b{display:block;font-family:var(--script);font-weight:400;font-size:52px;color:var(--wine2);line-height:1}
@@ -102,20 +129,27 @@ body:not(.lib) .libonly{display:none!important}
 @keyframes fall{to{transform:translateY(560px) rotate(700deg)}}
 
 /* tiempos */
-.beats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.beats b{height:46px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:22px;background:var(--paper);border:2px solid var(--rule);color:var(--muted);transition:transform .1s,background .1s}
-.beats b.on{background:var(--e);border-color:var(--e);color:#fff;transform:translateY(-2px)}
-.beats b.on.one{background:var(--wine2);border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.beats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:4px 6px}
+.beats b{--bc:#800020;position:relative;justify-self:center;height:54px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:23px;
+  background:color-mix(in srgb,var(--bc) 10%,var(--paper));border:2.5px solid color-mix(in srgb,var(--bc) 45%,var(--paper));color:var(--bc);transition:transform .14s cubic-bezier(.3,1.8,.5,1),background .1s,color .1s}
+.beats b:nth-child(2){--bc:#b8921f} .beats b:nth-child(3){--bc:#7d9470} .beats b:nth-child(4){--bc:#1a1a1a}
+.beats b.on{background:var(--bc);border-color:var(--gold);color:#fff;transform:scale(1.22) translateY(-4px);box-shadow:0 6px 14px color-mix(in srgb,var(--bc) 40%,transparent)}
+.beats b::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:3px solid var(--bc);opacity:0}
+.beats b.on::after{animation:ripple .5s ease-out}
+@keyframes ripple{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.7)}}
 .hold{display:flex;flex-direction:column;gap:6px;background:var(--paper);border:2px solid var(--rule);border-radius:14px;padding:10px 14px}
 .hold .ht{display:flex;justify-content:space-between;font-weight:700;font-size:15px}
 .hold .ht span{color:var(--muted);font-variant-numeric:tabular-nums}
 .hold .bar{height:12px;background:var(--rule);border-radius:99px;overflow:hidden}
-.hold .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--e));border-radius:99px}
+.hold .bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.25) 0 8px,transparent 8px 16px),linear-gradient(90deg,var(--gold),var(--e));background-size:22px 22px,auto;border-radius:99px;animation:stripes .8s linear infinite}
+@keyframes stripes{to{background-position:22px 0,0 0}}
 
 .next{display:flex;align-items:center;gap:12px;background:var(--paper);border:1.5px dashed var(--gold);border-radius:16px;padding:6px 14px 6px 6px;min-height:64px}
 .next img{height:52px;width:60px;object-fit:contain;flex:none}
 .next .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .next .nn{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+.next.soon{border-style:solid;border-color:var(--wine2);animation:nudge .4s ease-in-out infinite alternate}
+@keyframes nudge{to{transform:translateX(5px)}}
 
 .tl{position:relative;height:28px;border-radius:10px;background:var(--paper);border:2px solid var(--rule);touch-action:none;cursor:pointer;overflow:hidden}
 .tl .done{position:absolute;left:0;top:0;bottom:0;background:color-mix(in srgb,var(--e) 22%,var(--paper))}
@@ -128,7 +162,10 @@ body:not(.lib) .libonly{display:none!important}
 .cbtn svg{width:22px;height:22px}
 .play{width:76px;height:76px;background:var(--wine2);color:var(--gold2);border:3px solid var(--gold);box-shadow:0 6px 16px rgba(111,10,33,.3)}
 .play svg{width:32px;height:32px}
-.cbtn:active{transform:scale(.95)}
+.cbtn:active{transform:scale(.92)}
+.cbtn{transition:transform .1s}
+.play.on{animation:beatpulse .5s ease-out}
+@keyframes beatpulse{from{box-shadow:0 0 0 0 color-mix(in srgb,var(--gold) 80%,transparent),0 6px 16px rgba(111,10,33,.3)}to{box-shadow:0 0 0 16px transparent,0 6px 16px rgba(111,10,33,.3)}}
 .opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .seg{display:inline-flex;background:var(--paper);border:1.5px solid var(--rule);border-radius:12px;padding:3px}
 .seg button{padding:5px 11px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}
@@ -175,6 +212,7 @@ body:not(.lib) .libonly{display:none!important}
 <header class="hero libonly">
   <div class="hin">
     <img src="img/logo-dorado.png" alt="">
+    <span class="hn" style="left:58%;animation-delay:0s">♪</span><span class="hn" style="left:74%;animation-delay:2.3s">♫</span><span class="hn" style="left:90%;animation-delay:4.6s">♩</span>
     <div><h1>Partituras en Movimiento</h1><p>Transforma el movimiento · 1.º ESO</p></div>
   </div>
 </header>
@@ -202,8 +240,12 @@ body:not(.lib) .libonly{display:none!important}
   <!-- BAILAR -->
   <section class="view" id="v-bailar" role="tabpanel" aria-labelledby="t-bailar">
     <div class="stage" id="stage">
+      <div class="notes" aria-hidden="true"><span style="left:8%;animation-delay:0s">♪</span><span style="left:22%;animation-delay:1.4s;font-size:18px">♫</span><span style="left:76%;animation-delay:.7s">♩</span><span style="left:88%;animation-delay:2.2s;font-size:20px">♪</span><span style="left:62%;animation-delay:3s;font-size:16px">♫</span></div>
       <div class="floor"></div>
-      <img class="pic" id="pic" alt="">
+      <div class="shadow" id="shadow"></div>
+      <div class="layer"><img class="pic" id="pic" alt=""></div>
+      <div class="layer"><img class="pic" id="pic2" alt="" aria-hidden="true" style="opacity:0"></div>
+      <svg class="spark" id="spark" style="left:50%;top:18%" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" fill="currentColor"/></svg>
       <span class="pg" id="pg"></span>
       <div class="badge"><i id="num">01</i><span id="tm">00:01</span></div>
       <div class="ready" id="ready"><div><b>¡Prepárate!</b><span>Pulsa ▶ para empezar</span></div></div>
@@ -339,7 +381,7 @@ async function keepAwake(on){ try{ if(on && 'wakeLock' in navigator && !wake){ w
 /* ===================== biblioteca ===================== */
 $('songs').innerHTML = SONGS.map(s => {
   const b = build(s);
-  const picks = s.figures ? [b.steps[5]] : [b.steps[0], b.steps[Math.floor(b.steps.length/2)], b.steps[b.steps.length-1]];
+  const picks = s.figures ? [b.steps[5]] : [b.steps[0], b.steps[6], b.steps[12]];
   return `<a class="song${s.figures?' fig':''}" href="#${s.id}" style="--e:${s.color}">
     <div class="band"><b>${s.emotion}</b><span>${s.style}</span></div>
     <div class="pics">${picks.map(p=>`<img src="${p.img}" alt="" loading="lazy">`).join('')}</div>
@@ -347,6 +389,18 @@ $('songs').innerHTML = SONGS.map(s => {
       <div class="sm"><span>${b.steps.length} ${s.figures?'figuras':'pasos'}</span><span>Fragmento ${s.fragment}</span></div>
       <span class="go">Empezar ›</span></div></a>`;
 }).join('');
+
+// Las tarjetas «bailan»: cada pictograma va pasando por los pasos de su canción.
+setInterval(() => {
+  if (!document.body.classList.contains('lib') || document.hidden) return;
+  document.querySelectorAll('.song').forEach((card,ci) => {
+    const s = SONGS[ci], steps = build(s).steps;
+    card.querySelectorAll('.pics img').forEach((im,k) => {
+      const n = ((im.dataset.f ? +im.dataset.f : (s.figures ? 5 : k*6)) + 1) % steps.length;
+      im.dataset.f = n; im.src = steps[n].img;
+    });
+  });
+}, 900);
 
 /* ===================== interfaz de canción ===================== */
 const tl = $('tl');
@@ -385,7 +439,10 @@ function onStepChange(i){
   const s = STEPS[Math.max(i,0)], word = SONG.figures ? 'Figura' : 'Paso';
   $('ready').hidden = i>=0;
   const pic = $('pic'); pic.src = s.img; pic.alt = `${word} ${s.n}`;
+  pic.style.opacity = 1; $('pic2').style.opacity = 0;
   pic.classList.remove('enter'); void pic.offsetWidth; pic.classList.add('enter');
+  const nb = $('num'); nb.classList.remove('bump'); void nb.offsetWidth; nb.classList.add('bump');
+  if (st.playing && i>=0){ const sp = $('spark'); sp.style.left = (20 + Math.random()*60)+'%'; sp.style.top = (10 + Math.random()*25)+'%'; sp.classList.remove('go'); void sp.offsetWidth; sp.classList.add('go'); }
   $('num').textContent = pad(s.n); $('tm').textContent = s.label;
   $('pg').textContent = `Página ${s.page+1} de ${PAGES}`;
   const ni = i<0 ? 0 : nextIdx(i), ns = STEPS[ni];
@@ -400,13 +457,28 @@ function render(){
   const into = st.clock - s.t, live = st.playing && st.ci===null && i>=0;
   if (!SONG.figures){
     const bd = s.dur/4, beatF = into/bd, beat = Math.min(3, Math.max(0, Math.floor(beatF)));
-    if (live){ const key = i*4+beat; if (key!==st.lastKey){ st.lastKey=key; click(beat===0); } }
+    if (live){ const key = i*4+beat; if (key!==st.lastKey){ st.lastKey=key; click(beat===0); const pb=$('play'); pb.classList.remove('on'); void pb.offsetWidth; pb.classList.add('on'); } }
     const bs = $('beats').children;
     for (let k=0;k<4;k++) bs[k].classList.toggle('on', i>=0 && k===beat && (st.playing ? st.ci===null : true));
-    const frac = beatF - Math.floor(beatF);
-    $('pic').style.transform = live ? `translateY(${(-5*Math.exp(-frac*6)).toFixed(2)}px)` : '';
+    const frac = beatF - Math.floor(beatF), hit = Math.exp(-frac*5), sway = (beat%2 ? 1 : -1) * 2.5;
+    if (live){
+      $('pic').style.transform = `translateY(${(-10*hit).toFixed(1)}px) scale(${(1+0.05*hit).toFixed(3)},${(1-0.04*hit).toFixed(3)}) rotate(${(sway*(1-frac*0.6)).toFixed(2)}deg)`;
+      $('shadow').style.transform = `scaleX(${(1-0.25*hit).toFixed(3)})`;
+      $('stage').classList.toggle('flash', beat===0 && frac<0.35);
+    } else { $('pic').style.transform = ''; $('shadow').style.transform = ''; $('stage').classList.remove('flash'); }
+    // fundido hacia el paso siguiente en el último tramo del paso
+    const ni = nextIdx(i), phase = into/s.dur, p2 = $('pic2');
+    if (live && ni!==i && phase>0.8){
+      const k = Math.min(1,(phase-0.8)/0.2), e = k*k*(3-2*k);
+      if (p2.dataset.n != ni){ p2.src = STEPS[ni].img; p2.dataset.n = ni; }
+      p2.style.opacity = e.toFixed(3); $('pic').style.opacity = (1-e).toFixed(3);
+      p2.style.transform = `scale(${(0.9+0.1*e).toFixed(3)})`;
+    } else if (p2.style.opacity !== '0'){ p2.style.opacity = 0; $('pic').style.opacity = 1; }
+    $('next').classList.toggle('soon', live && beat===3);
   } else {
     const p = i<0 ? 0 : Math.min(1, into/s.dur);
+    $('pic').style.transform = live ? `scale(${(1+0.025*Math.sin(st.clock*3)).toFixed(3)})` : '';
+    $('next').classList.toggle('soon', live && s.dur-into < 1.5);
     $('holdBar').style.width = (p*100)+'%';
     const left = i<0 ? s.dur : Math.max(0, Math.ceil(s.dur - into));
     $('holdTxt').textContent = `${left} s`;
@@ -447,9 +519,9 @@ function play(){
   if (st.ended){ st.clock = 0; st.ended=false; }
   st.playing = true; st.lastKey = null;
   if (st.countin) startCount(); else audioStart();
-  setPlayIcon(); keepAwake(true);
+  setPlayIcon(); keepAwake(true); $('stage').classList.add('playing');
 }
-function pause(){ audioStop(); st.playing=false; st.ci=null; $('ciBox').hidden=true; setPlayIcon(); keepAwake(false); }
+function pause(){ audioStop(); st.playing=false; st.ci=null; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); $('ciBox').hidden=true; setPlayIcon(); keepAwake(false); }
 function finish(){ pause(); st.ended=true; $('endBox').hidden=false; confetti(); }
 function confetti(){
   const box = $('confetti'), cols = ['#800020','#d4af37','#e3c46a','#7d9470','#1a1a1a'];
