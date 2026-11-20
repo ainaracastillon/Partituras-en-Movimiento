@@ -145,72 +145,14 @@ body:not(.lib) .libonly{display:none!important}
 .hasm{display:inline-flex;gap:6px}
 .hint{font-size:13px;color:var(--muted);text-align:center;margin:0;line-height:1.4}
 
-/* recorrido */
+/* partitura (imágenes) */
+.sheet{display:flex;flex-direction:column;gap:14px}
+.sheet a{display:block;background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:8px;box-shadow:0 8px 20px rgba(111,10,33,.08)}
+.sheet img{display:block;width:100%;height:auto;border-radius:8px}
+.sheet .pn{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600;padding:6px 4px 0}
+.sheetempty{text-align:center;padding:40px 16px;color:var(--muted);background:var(--paper);border:2px dashed var(--gold);border-radius:18px;font-size:15px}
+.sheetempty b{display:block;font-family:var(--script);font-weight:400;font-size:42px;color:var(--wine2);line-height:1.1}
 .vh{font-family:var(--script);font-weight:400;color:var(--wine2);font-size:44px;line-height:1}
-.vp{margin:0 0 4px;color:var(--muted);font-size:14.5px;line-height:1.4}
-.pghead{background:var(--wine2);color:#fff;border-bottom:4px solid var(--gold);border-radius:12px 12px 0 0;padding:8px 14px;margin-top:8px}
-.pghead b{display:block;font-size:17px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
-.pghead span{font-size:12.5px;color:var(--gold2)}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;background:var(--cream);padding:8px 0 4px}
-.cards.fig{grid-template-columns:repeat(2,minmax(0,1fr))}
-.card{background:var(--paper);border:1.5px solid var(--gold);border-radius:14px;padding:8px 6px 6px;display:flex;flex-direction:column;align-items:stretch;gap:4px;text-align:left}
-.card img{height:86px;width:100%;object-fit:contain}
-.cards.fig .card img{height:110px}
-.card .cl{display:flex;align-items:center;gap:6px;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums}
-.card .cl i{font-style:normal;background:var(--wine2);color:#fff;border-radius:7px;min-width:24px;height:22px;display:grid;place-items:center;font-size:11px;padding:0 4px}
-.card.cur{border-width:3px;border-color:var(--wine2);background:color-mix(in srgb,var(--gold) 12%,var(--paper))}
-
-/* partitura y letra */
-.scoretools{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));z-index:4;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;padding:8px 0;background:linear-gradient(var(--cream) 82%,transparent)}
-.mini{width:46px;height:46px;border-radius:50%;background:var(--wine2);color:var(--gold2);border:2px solid var(--gold);display:grid;place-items:center;flex:none}
-.mini svg{width:20px;height:20px}
-.scoretools .tog{padding:6px 9px;flex:none}
-.where{flex:1 1 auto;font-weight:700;font-size:15px;line-height:1.15;min-width:0}
-.where small{display:block;font-weight:500;font-size:12.5px;color:var(--muted)}
-.modes{align-self:center}
-.score{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.sbar{background:var(--paper);border:1.5px solid var(--gold);border-radius:14px;padding:6px 8px 8px;display:flex;flex-direction:column;gap:5px;cursor:pointer;min-width:0}
-.sbar.cur{border:3px solid var(--wine2);padding:5px 7px 7px;background:color-mix(in srgb,var(--gold) 10%,var(--paper))}
-.sb-top{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
-.sb-top i{font-style:normal;background:var(--wine2);color:#fff;border-radius:7px;min-width:24px;height:21px;display:inline-grid;place-items:center;font-size:11px;padding:0 4px;margin-right:4px}
-.staff{display:grid;grid-template-columns:auto 1fr;gap:4px;align-items:center}
-.staff span{font-size:11px;font-weight:800;color:#fff;border-radius:5px;width:16px;height:16px;display:grid;place-items:center}
-.staff span.g1{background:var(--wine2)} .staff span.g2{background:#8a9e7b}
-.staff svg{width:100%;height:22px;display:block}
-.lyr{width:100%;font:inherit;font-size:14px;font-weight:600;border:0;border-bottom:1.5px dashed var(--gold);background:color-mix(in srgb,var(--gold) 9%,var(--paper));border-radius:7px 7px 0 0;padding:5px 7px;color:var(--ink);min-width:0}
-.lyr::placeholder{color:#bfb3a6;font-weight:400}
-.lyr:focus{outline:none;border-bottom:2px solid var(--wine2)}
-.pulse{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.pulse b{height:18px;border-radius:99px;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--cream);color:var(--muted)}
-.pulse b.on{background:var(--e);color:#fff}
-.bookscore{background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
-.bshead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
-.bshead span{font-size:12.5px;color:var(--muted)}
-#bookImgs{display:flex;flex-direction:column;gap:10px}
-#bookImgs img{width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:8px}
-.pdfbox{background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
-.pdfhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.pdfhead b{margin-right:auto}
-.pdfbox iframe{width:100%;height:70vh;border:1.5px solid var(--rule);border-radius:10px;background:#fff}
-.lyfull{background:var(--paper);border:2px solid var(--gold);border-radius:18px;padding:14px 12px}
-.ll{display:block;width:100%;text-align:left;font:inherit;font-size:19px;line-height:1.35;font-weight:600;padding:3px 10px;border-radius:10px}
-.ll.cur{background:color-mix(in srgb,var(--gold) 26%,var(--paper));box-shadow:inset 4px 0 0 var(--wine2)}
-.lyempty,.instr{text-align:center;padding:22px 12px;color:var(--muted);font-size:15px;line-height:1.45}
-.lyempty b,.instr b{display:block;font-family:var(--script);font-weight:400;font-size:38px;color:var(--wine2);line-height:1.1}
-.mlyr{font-weight:600;font-size:15px;color:var(--wine2);text-align:center}
-.mlyr:empty{display:none}
-
-/* diálogo */
-.dlg{position:fixed;inset:0;z-index:20;background:rgba(40,8,18,.5);display:grid;place-items:center;padding:16px}
-.dlgbox{width:100%;max-width:520px;max-height:92vh;overflow:auto;background:var(--paper);border:2px solid var(--gold);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px}
-.dlgbox h2{font-family:var(--script);font-weight:400;color:var(--wine2);font-size:40px}
-.dlgbox p{margin:0;font-size:14.5px;line-height:1.4;color:var(--muted)}
-.dlgbox textarea{width:100%;font:inherit;font-size:15px;line-height:1.4;border:1.5px solid var(--gold);border-radius:12px;padding:10px;resize:vertical;min-height:200px}
-.dlgbox .from{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
-.dlgbox .from input{width:72px;font:inherit;border:1.5px solid var(--gold);border-radius:9px;padding:4px 8px}
-.dlgbox .msg{color:var(--wine2);font-weight:600}
-.dlgbox .msg:empty{display:none}
-.dlgbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 
 /* pestañas */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--wine2);border-top:4px solid var(--gold);display:flex;justify-content:center;gap:6px;padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px))}
@@ -218,14 +160,12 @@ body:not(.lib) .libonly{display:none!important}
 .tabs button svg{width:24px;height:24px}
 .tabs button[aria-selected="true"]{background:var(--gold);color:var(--wine)}
 
-@media (max-width:440px){ .scoretools .where{display:none} .scoretools .mini{margin-right:auto} }
-@media (min-width:560px){ .score{grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media (min-height:880px){ .stage{height:clamp(230px,40vh,520px)} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
 @media print{
   @page{margin:12mm}
   body{background:#fff}
-  .tabs,.shead,.scoretools,.modes,.vp,.vh,.pdfbox,.dlg,#v-bailar,#v-recorrido{display:none!important}
+  .tabs,.shead,.vh,#v-bailar{display:none!important}
   #v-letra{display:flex!important}
   .app{max-width:none;padding:0}
   .sbar{break-inside:avoid}
@@ -281,8 +221,7 @@ body:not(.lib) .libonly{display:none!important}
       <div class="overlay" id="ciBox" hidden><div class="countin" id="ciNum"></div></div>
       <div class="overlay" id="endBox" hidden><div class="endmsg"><b>¡Bravo!</b><p id="endTxt">Has bailado la coreografía entera.</p><button class="btn" id="again">Otra vez</button></div></div>
     </div>
-    <div class="mlyr" id="mlyr"></div>
-    <div class="beats" id="beats"><b class="one">1</b><b>2</b><b>3</b><b>4</b></div>
+        <div class="beats" id="beats"><b class="one">1</b><b>2</b><b>3</b><b>4</b></div>
     <div class="hold" id="hold" hidden><div class="ht"><b>Mantén la figura</b><span id="holdTxt"></span></div><div class="bar"><i id="holdBar"></i></div></div>
     <div class="next" id="next"><img id="nextPic" alt=""><div><div class="lbl">Después</div><div class="nn" id="nextName"></div></div></div>
     <div class="tl" id="tl" aria-label="Línea de tiempo"><div class="done" id="done"></div><div class="ph" id="ph"></div></div>
@@ -307,52 +246,16 @@ body:not(.lib) .libonly{display:none!important}
   <!-- PARTITURA Y LETRA -->
   <section class="view" id="v-letra" role="tabpanel" aria-labelledby="t-letra" hidden>
     <h2 class="vh">Partitura y letra</h2>
-    <p class="vp" id="letraIntro"></p>
-    <div class="scoretools">
-      <button class="mini" id="scorePlay" aria-label="Reproducir"><svg viewBox="0 0 24 24" id="scorePlayIco"></svg></button>
-      <div class="where" id="scoreWhere"></div>
-      <button class="tog" id="pasteBtn" aria-label="Pegar letra">📋 Letra</button>
-      <label class="tog" id="pdfBtn">📄 PDF<input type="file" id="pdfIn" accept="application/pdf,.pdf" hidden></label>
-      <button class="tog" id="dlBtn" aria-label="Descargar la letra como archivo para subir">⬇️ .txt</button>
-      <button class="tog" id="printBtn" aria-label="Imprimir">🖨️</button>
-    </div>
-    <div class="seg modes" id="modes" role="group" aria-label="Qué ver"><button data-m="score" aria-pressed="true">🎼 Partitura</button><button data-m="full" aria-pressed="false">📝 Letra completa</button></div>
-    <div class="bookscore" id="bookScore" hidden>
-      <div class="bshead"><b>📖 Partitura del cuaderno</b><span>Toca una página para verla en grande</span></div>
-      <div id="bookImgs"></div>
-    </div>
-    <div class="pdfbox" id="pdfBox" hidden>
-      <div class="pdfhead"><b>📄 Partitura en PDF</b><a class="tog" id="pdfOpen" href="#" target="_blank" rel="noopener">Abrir ↗</a><button class="tog" id="pdfDel">Quitar</button></div>
-      <iframe id="pdfFrame" title="Partitura en PDF"></iframe>
-    </div>
-    <div class="instr" id="instr" hidden><b>Pieza instrumental</b>Esta pieza no tiene letra. Puedes añadir su partitura con el botón 📄 PDF.</div>
-    <div class="score" id="score"></div>
-    <div class="lyfull" id="lyfull" hidden></div>
+    <div id="sheet" class="sheet"></div>
+    <div class="sheetempty" id="sheetEmpty" hidden><b>Muy pronto</b>La partitura de esta canción aparecerá aquí.</div>
   </section>
 
-  <!-- RECORRIDO -->
-  <section class="view" id="v-recorrido" role="tabpanel" aria-labelledby="t-recorrido" hidden>
-    <h2 class="vh">Recorrido</h2>
-    <p class="vp">La partitura de movimiento completa, igual que en el cuaderno. Toca un paso para practicarlo.</p>
-    <div id="pages"></div>
-  </section>
 </div>
 
-<div class="dlg" id="pasteDlg" hidden role="dialog" aria-modal="true" aria-labelledby="pasteTitle">
-  <div class="dlgbox">
-    <h2 id="pasteTitle">Pegar la letra</h2>
-    <p>Pega la letra entera. Cada línea va a un paso, en orden; las líneas vacías se saltan. Se guarda solo en este dispositivo.</p>
-    <textarea id="pasteTxt" rows="10" placeholder="Pega aquí la letra…"></textarea>
-    <label class="from">Empieza en el paso <input type="number" id="pasteFrom" min="1" value="1"></label>
-    <p class="msg" id="pasteMsg"></p>
-    <div class="dlgbtns"><button class="tog" id="pasteCancel">Cancelar</button><button class="tog" id="pasteClear">🗑️ Borrar letra</button><button class="btn" id="pasteOk">Colocar</button></div>
-  </div>
-</div>
 
 <nav class="tabs songonly" role="tablist">
   <button role="tab" id="t-bailar" data-v="bailar" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="4.5" r="2.3"/><path d="M12 7v7M12 9l-5 3M12 9l5-4M12 14l-4 7M12 14l4 6"/></svg>Bailar</button>
   <button role="tab" id="t-letra" data-v="letra" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>Partitura y letra</button>
-  <button role="tab" id="t-recorrido" data-v="recorrido" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>Recorrido</button>
 </nav>
 
 <script>
@@ -457,15 +360,11 @@ $('songs').innerHTML = SONGS.map(s => {
 
 /* ===================== interfaz de canción ===================== */
 const tl = $('tl');
-let recCards = [], scoreBars = [], curPulse = [], fullLines = [], LYR = {}, MODE = 'score';
+
 const ICON_PLAY = '<path d="M7 4.5v15l13-7.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>';
 const ICON_PAUSE = '<rect x="5.5" y="4" width="4.5" height="16" rx="1.5" fill="currentColor"/><rect x="14" y="4" width="4.5" height="16" rx="1.5" fill="currentColor"/>';
-function setPlayIcon(){ $('playIco').innerHTML = $('scorePlayIco').innerHTML = st.playing ? ICON_PAUSE : ICON_PLAY;
-  $('play').setAttribute('aria-label', st.playing?'Pausa':'Reproducir'); $('scorePlay').setAttribute('aria-label', st.playing?'Pausa':'Reproducir'); }
+function setPlayIcon(){ $('playIco').innerHTML = st.playing ? ICON_PAUSE : ICON_PLAY; $('play').setAttribute('aria-label', st.playing?'Pausa':'Reproducir'); }
 
-const STAFF = (()=>{ let s='<svg viewBox="0 0 160 22" preserveAspectRatio="none" aria-hidden="true">';
-  for (let i=0;i<5;i++) s+=`<line x1="0" y1="${2+i*4.5}" x2="160" y2="${2+i*4.5}" stroke="#2a2024" stroke-width=".8" vector-effect="non-scaling-stroke"/>`;
-  return s+'<line x1="159.4" y1="2" x2="159.4" y2="20" stroke="#2a2024" stroke-width="1.4" vector-effect="non-scaling-stroke"/></svg>'; })();
 
 function loadSong(song){
   if (st.playing) pause();
@@ -484,30 +383,7 @@ function loadSong(song){
   // línea de tiempo
   tl.querySelectorAll('.tk').forEach(e=>e.remove());
   STEPS.forEach((s,i) => { if (i===0) return; const d=document.createElement('div'); d.className = 'tk' + (i%PER_PAGE===0?' pgk':''); d.style.left=(s.t/END*100)+'%'; tl.insertBefore(d,$('ph')); });
-  // recorrido (como las páginas del cuaderno)
-  const word = song.figures ? 'figura' : 'paso';
-  $('pages').innerHTML = Array.from({length:PAGES},(_,p)=>`
-    <div class="pghead"><b>${song.title}${song.id==='so-what'?'!':''}</b><span>Partitura de movimiento · Página ${p+1} de ${PAGES}</span></div>
-    <div class="cards${song.figures?' fig':''}">${STEPS.slice(p*PER_PAGE,(p+1)*PER_PAGE).map(s=>`
-      <button class="card" data-i="${s.i}" aria-label="${word} ${s.n}, ${s.label}"><img src="${s.img}" alt="" loading="lazy"><span class="cl"><i>${pad(s.n)}</i>${s.label}</span></button>`).join('')}</div>`).join('');
-  recCards = [...$('pages').querySelectorAll('.card')];
-  // partitura y letra
-  LYR = store.get('lyr.'+song.id, {});
-  $('instr').hidden = !song.instrumental;
-  $('pasteBtn').hidden = $('modes').hidden = $('dlBtn').hidden = !!song.instrumental;
-  $('letraIntro').textContent = song.instrumental
-    ? 'Añade la partitura en PDF para tenerla a mano mientras ensayas. Se guarda solo en este dispositivo.'
-    : 'Cada casilla es un paso, con el pentagrama del grupo 1 y del grupo 2 y su línea de letra. Pega la letra o escríbela, y añade tu partitura en PDF: todo se guarda solo en este dispositivo.';
-  $('score').innerHTML = song.instrumental ? '' : STEPS.map(s=>`
-    <div class="sbar" data-i="${s.i}">
-      <div class="sb-top"><span><i>${pad(s.n)}</i></span><span>${s.label}</span></div>
-      <div class="staff"><span class="g1">1</span>${STAFF}</div>
-      <input class="lyr" data-i="${s.i}" value="${esc(LYR[s.i]||'')}" placeholder="Letra…" aria-label="Letra del paso ${s.n}" autocomplete="off">
-      <div class="staff"><span class="g2">2</span>${STAFF}</div>
-      <div class="pulse"><b>1</b><b>2</b><b>3</b><b>4</b></div>
-    </div>`).join('');
-  scoreBars = [...$('score').querySelectorAll('.sbar')];
-  setMode('score'); renderFull(); loadPdf(song.id); loadAudio(song.id); loadServerExtras(song.id);
+  loadSheet(song.id); loadAudio(song.id);
   showView('bailar');
   render();
 }
@@ -525,15 +401,6 @@ function onStepChange(i){
   const ni = i<0 ? 0 : nextIdx(i), ns = STEPS[ni];
   if (i>=0 && ni===i && !st.loop){ $('next').style.visibility='hidden'; }
   else { $('next').style.visibility=''; $('nextPic').src = ns.img; $('nextName').textContent = `${word} ${pad(ns.n)} · ${ns.label}`; }
-  recCards.forEach(c=>c.classList.toggle('cur', +c.dataset.i===i));
-  scoreBars.forEach(el=>el.classList.remove('cur'));
-  curPulse.forEach(x=>x.classList.remove('on'));
-  const sb = scoreBars[i]; curPulse = sb ? [...sb.querySelectorAll('.pulse b')] : [];
-  if (sb){ sb.classList.add('cur');
-    if (st.playing && MODE==='score' && !$('v-letra').hidden && !(document.activeElement && document.activeElement.classList.contains('lyr'))) sb.scrollIntoView({block:'center', behavior:'smooth'}); }
-  $('mlyr').textContent = (LYR[i]||'').trim() ? '🎤 ' + LYR[i] : '';
-  markFull(i, st.playing);
-  $('scoreWhere').innerHTML = i<0 ? `${SONG.title}<small>Preparados · ${STEPS.length} ${SONG.figures?'figuras':'pasos'}</small>` : `${word} ${s.n} de ${STEPS.length}<small>${s.label}</small>`;
 }
 
 function render(){
@@ -546,7 +413,6 @@ function render(){
     if (live){ const key = i*4+beat; if (key!==st.lastKey){ st.lastKey=key; click(beat===0); } }
     const bs = $('beats').children;
     for (let k=0;k<4;k++) bs[k].classList.toggle('on', i>=0 && k===beat && (st.playing ? st.ci===null : true));
-    curPulse.forEach((el,k)=>el.classList.toggle('on', live && k===beat));
     const frac = beatF - Math.floor(beatF);
     $('pic').style.transform = live ? `translateY(${(-5*Math.exp(-frac*6)).toFixed(2)}px)` : '';
   } else {
@@ -607,7 +473,6 @@ function seekStep(i){
 }
 
 $('play').onclick = () => st.playing ? pause() : play();
-$('scorePlay').onclick = () => st.playing ? pause() : play();
 $('again').onclick = () => { st.clock=0; st.ended=false; play(); };
 $('prev').onclick = () => { const i=stepAt(st.clock); seekStep(i>=0 && st.clock-STEPS[i].t > 0.6 && !st.playing ? i : i-1); };
 $('nextBtn').onclick = () => seekStep(stepAt(st.clock)+1);
@@ -633,120 +498,33 @@ document.addEventListener('keydown', e => {
   if (e.code==='Space'){ e.preventDefault(); st.playing?pause():play(); }
   else if (e.key==='ArrowRight') seekStep(stepAt(st.clock)+1);
   else if (e.key==='ArrowLeft') seekStep(stepAt(st.clock)-1);
-  else if (e.key==='Escape' && !$('pasteDlg').hidden) closePaste();
 });
 
-$('pages').addEventListener('click', e => { const c=e.target.closest('.card'); if(!c) return; seekStep(+c.dataset.i); showView('bailar'); });
 
-/* ===================== partitura y letra ===================== */
-let saveT = 0;
-$('score').addEventListener('input', e => {
-  const el = e.target.closest('.lyr'); if(!el) return;
-  if (el.value.trim()) LYR[el.dataset.i] = el.value; else delete LYR[el.dataset.i];
-  clearTimeout(saveT); saveT = setTimeout(()=>store.set('lyr.'+SONG.id, LYR), 300);
-  if (+el.dataset.i===st.idx) $('mlyr').textContent = el.value.trim() ? '🎤 '+el.value : '';
-});
-$('score').addEventListener('click', e => { if (e.target.closest('.lyr')) return; const b=e.target.closest('.sbar'); if(b) seekStep(+b.dataset.i); });
-function renderFull(){
-  const lines = STEPS.filter(s=>(LYR[s.i]||'').trim());
-  $('lyfull').innerHTML = lines.length
-    ? lines.map(s=>`<button class="ll" data-i="${s.i}">${esc(LYR[s.i])}</button>`).join('')
-    : `<div class="lyempty"><b>Aún no hay letra</b>Pégala con 📋 o escríbela paso a paso en «Partitura», y aquí aparecerá la canción entera.</div>`;
-  fullLines = [...$('lyfull').querySelectorAll('.ll')];
-  markFull(st.idx, false);
+/* ===================== partitura y letra: imágenes subidas a partituras/ =====================
+   Nombres: partituras/<canción>-1.png, -2.png… (también .jpg, .jpeg o .webp) */
+const EXTS = ['png','jpg','jpeg','webp','PNG','JPG','JPEG','WEBP'];
+const isImg = r => r.ok && (r.headers.get('content-type')||'').startsWith('image');
+async function findPage(id, n){
+  const hits = await Promise.all(EXTS.map(async ext => { try { const u = `partituras/${id}-${n}.${ext}`; const r = await fetch(u, {method:'HEAD', cache:'no-store'}); return isImg(r) ? u : null; } catch(e) { return null; } }));
+  return hits.find(Boolean) || null;
 }
-function markFull(i, scroll){
-  fullLines.forEach(l=>l.classList.toggle('cur', +l.dataset.i===i));
-  const el = fullLines.find(l=>+l.dataset.i===i);
-  if (el && scroll && MODE==='full' && !$('v-letra').hidden) el.scrollIntoView({block:'center', behavior:'smooth'});
-}
-function setMode(m){
-  MODE = m;
-  [...$('modes').children].forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.m===m)));
-  $('score').hidden = m!=='score' || !!(SONG && SONG.instrumental); $('lyfull').hidden = m!=='full';
-  $('pdfBox').hidden = m!=='score' || !pdfUrl;
-  $('bookScore').hidden = m!=='score' || !bookN;
-  if (m==='full') renderFull();
-}
-$('modes').addEventListener('click', e => { const b=e.target.closest('button'); if(b) setMode(b.dataset.m); });
-$('lyfull').addEventListener('click', e => { const l=e.target.closest('.ll'); if(l) seekStep(+l.dataset.i); });
-$('dlBtn').onclick = async () => {
-  const txt = STEPS.map(s => `${pad(s.n)} (${mmss(s.t)}): ${(LYR[s.i]||'').trim()}`).join('\n') + '\n';
-  const name = `${SONG.id}.txt`;
-  try {
-    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain;charset=utf-8'}));
-    a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
-  } catch(e) {}
-  try { await navigator.clipboard.writeText(txt); } catch(e) {}
-};
-$('printBtn').onclick = () => { try { window.print(); } catch(e) {} };
-
-function openPaste(){ $('pasteTxt').value = store.get('lyrRaw.'+SONG.id, ''); $('pasteFrom').value = 1; $('pasteFrom').max = STEPS.length; $('pasteMsg').textContent=''; $('pasteDlg').hidden=false; setTimeout(()=>$('pasteTxt').focus(),50); }
-const closePaste = () => { $('pasteDlg').hidden = true; };
-function refreshLyrics(){ $('score').querySelectorAll('.lyr').forEach(el=>{ el.value = LYR[el.dataset.i]||''; }); renderFull(); st.idx=-2; }
-$('pasteBtn').onclick = openPaste;
-$('pasteCancel').onclick = closePaste;
-$('pasteDlg').addEventListener('click', e => { if (e.target===$('pasteDlg')) closePaste(); });
-$('pasteOk').onclick = () => {
-  const raw = $('pasteTxt').value, lines = raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-  if (!lines.length){ $('pasteMsg').textContent = 'Pega primero la letra en el cuadro.'; return; }
-  const from = Math.max(1, Math.min(STEPS.length, parseInt($('pasteFrom').value,10)||1)) - 1;
-  const fit = Math.min(lines.length, STEPS.length-from);
-  for (let k=0;k<fit;k++) LYR[from+k] = lines[k];
-  store.set('lyrRaw.'+SONG.id, raw); store.set('lyr.'+SONG.id, LYR); refreshLyrics();
-  const extra = lines.length - fit;
-  if (extra>0) $('pasteMsg').textContent = `Colocadas ${fit} líneas. Sobran ${extra}: junta varias en una misma línea o empieza antes.`;
-  else { closePaste(); setMode('full'); }
-};
-$('pasteClear').onclick = () => { LYR = {}; store.set('lyrRaw.'+SONG.id,''); store.set('lyr.'+SONG.id, LYR); $('pasteTxt').value=''; refreshLyrics(); $('pasteMsg').textContent='Letra borrada.'; };
-
-/* Partitura y letra subidas a la web (carpetas partituras/ y letras/) */
-let bookN = 0, SERVER_LYR = {};
-const okType = (r, t) => r.ok && (r.headers.get('content-type')||'').includes(t);
-async function loadServerExtras(id){
-  bookN = 0; $('bookImgs').innerHTML = ''; $('bookScore').hidden = true;
-  // páginas de partitura: partituras/<id>-1.webp, -2.webp…
+async function loadSheet(id){
+  $('sheet').innerHTML = ''; $('sheetEmpty').hidden = true;
   const pages = [];
-  for (let n=1; n<=8; n++){
-    try { const url = `partituras/${id}-${n}.webp`, r = await fetch(url, {method:'HEAD', cache:'no-store'}); if (!okType(r,'image')) break; pages.push(url); } catch(e) { break; }
-  }
-  if (SONG && SONG.id===id && pages.length){
-    bookN = pages.length;
-    $('bookImgs').innerHTML = pages.map((u,k)=>`<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="Partitura, página ${k+1}" loading="lazy"></a>`).join('');
-    $('bookScore').hidden = MODE!=='score';
-  }
-  // letra: letras/<id>.txt con líneas «07 (00:12): texto»
-  try {
-    const r = await fetch(`letras/${id}.txt`, {cache:'no-store'});
-    if (okType(r,'text') && SONG && SONG.id===id){
-      const txt = await r.text(); SERVER_LYR = {};
-      txt.split(/\r?\n/).forEach(line => { const m = line.match(/^\s*(\d{1,3})\s*(?:\([^)]*\))?\s*[:.\-]\s?(.*)$/); if (m && m[2].trim()) SERVER_LYR[+m[1]-1] = m[2].trim(); });
-      LYR = Object.assign({}, SERVER_LYR, store.get('lyr.'+id, {}));
-      refreshLyrics();
-    }
-  } catch(e) {}
+  for (let n=1; n<=12; n++){ const u = await findPage(id, n); if (!u) break; pages.push(u); }
+  if (!SONG || SONG.id!==id) return;
+  $('sheet').innerHTML = pages.map((u,k)=>`<a href="${u}" target="_blank" rel="noopener"><img src="${u}" alt="Partitura de ${esc(SONG.title)}, página ${k+1}"><div class="pn"><span>Página ${k+1} de ${pages.length}</span><span>Toca para ampliar ↗</span></div></a>`).join('');
+  $('sheetEmpty').hidden = pages.length>0;
 }
 
-/* PDF guardado en este dispositivo */
+/* almacenamiento en este dispositivo (música) */
 const idb = (() => {
   let dbp = null;
   const open = () => dbp || (dbp = new Promise((res,rej)=>{ const r = indexedDB.open('pem',1); r.onupgradeneeded = () => r.result.createObjectStore('files'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }));
   const run = async (mode, fn) => { const d = await open(); return new Promise((res,rej)=>{ const t = d.transaction('files', mode); const q = fn(t.objectStore('files')); t.oncomplete = () => res(q && q.result); t.onerror = () => rej(t.error); }); };
   return { get: k => run('readonly', s=>s.get(k)).catch(()=>null), set: (k,v) => run('readwrite', s=>s.put(v,k)).then(()=>true).catch(()=>false), del: k => run('readwrite', s=>s.delete(k)).catch(()=>null) };
 })();
-let pdfUrl = null;
-function showPdf(blob){
-  if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-  pdfUrl = blob ? URL.createObjectURL(blob) : null;
-  $('pdfFrame').src = pdfUrl || 'about:blank'; $('pdfOpen').href = pdfUrl || '#';
-  $('pdfBox').hidden = !pdfUrl || MODE!=='score';
-}
-async function loadPdf(id){ showPdf(null); const b = await idb.get('pdf.'+id); if (b && SONG && SONG.id===id) showPdf(b); }
-$('pdfIn').addEventListener('change', async e => {
-  const f = e.target.files && e.target.files[0]; e.target.value=''; if (!f) return;
-  await idb.set('pdf.'+SONG.id, f); setMode('score'); showPdf(f); $('pdfBox').scrollIntoView({block:'start', behavior:'smooth'});
-});
-$('pdfDel').onclick = async () => { await idb.del('pdf.'+SONG.id); showPdf(null); };
 
 $('audioIn').addEventListener('change', async e => {
   const f = e.target.files && e.target.files[0]; e.target.value=''; if (!f) return;
@@ -767,10 +545,8 @@ $('vid').addEventListener('click', e => {
 const tabs = [...document.querySelectorAll('.tabs button')];
 function showView(v){
   tabs.forEach(t=>t.setAttribute('aria-selected', String(t.dataset.v===v)));
-  ['bailar','letra','recorrido'].forEach(n=>$('v-'+n).hidden = n!==v);
+  ['bailar','letra'].forEach(n=>$('v-'+n).hidden = n!==v);
   window.scrollTo(0,0);
-  if (v==='letra' && scoreBars[st.idx]) scoreBars[st.idx].scrollIntoView({block:'center'});
-  if (v==='recorrido' && recCards[st.idx]) recCards[st.idx].scrollIntoView({block:'center'});
 }
 tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
 
