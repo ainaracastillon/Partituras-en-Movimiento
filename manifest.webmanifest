@@ -1,7 +1,7 @@
 {
   "name": "Partituras en Movimiento",
   "short_name": "Partituras",
-  "description": "Partituras en Movimiento · 1.º ESO. Cuatro emociones, cuatro coreografías.",
+  "description": "Cuaderno «Transforma el movimiento» · 1.º ESO. Cuatro emociones, cuatro coreografías.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
@@ -10,21 +10,8 @@
   "background_color": "#fbf7ef",
   "theme_color": "#6f0a21",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

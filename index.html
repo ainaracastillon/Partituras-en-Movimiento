@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Partituras en Movimiento</title>
-<meta name="description" content="Partituras en Movimiento · 1.º ESO. Aprende cuatro coreografías paso a paso.">
+<meta name="description" content="Aplicación del cuaderno «Transforma el movimiento» · 1.º ESO. Aprende cuatro coreografías paso a paso.">
 <meta name="theme-color" content="#6f0a21">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -315,6 +315,7 @@ body:not(.home) .homeonly{display:none!important}
 <section class="cover homeonly" aria-label="Portada">
   <svg class="corn c1" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg><svg class="corn c2" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg><svg class="corn c3" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg><svg class="corn c4" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 44V12c0-4.5 3.5-8 8-8h32"/><path d="M10 38c0-12 6-22 18-24"/><path d="M16 20c3-1 6 1 6 4s-3 5-6 4"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg>
   <div class="top">
+    <div class="kick">Transforma el movimiento</div>
     <h1>PARTITURAS<span class="en">EN</span>MOVIMIENTO</h1>
   </div>
   <div class="stagec">
@@ -332,7 +333,7 @@ body:not(.home) .homeonly{display:none!important}
 <header class="hero libonly">
   <div class="hin">
     <img src="img/logo-dorado.png" alt="">
-    <div><h1>Partituras en Movimiento</h1><p>1.º ESO</p></div>
+    <div><h1>Partituras en Movimiento</h1><p>Transforma el movimiento · 1.º ESO</p></div>
   </div>
 </header>
 
@@ -426,7 +427,7 @@ body:not(.home) .homeonly{display:none!important}
 </nav>
 
 <script>
-/* ===================== CANCIONES =====================
+/* ===================== CANCIONES (del cuaderno) =====================
    Cada canción: emoción y color, fragmento del vídeo y la lista de pasos
    con el segundo en que empiezan (como en las páginas «Movimiento»).
    Las imágenes están en img/<id>-NN.webp. */
@@ -578,7 +579,7 @@ function onStepChange(i){
   const nb = $('num'); nb.classList.remove('bump'); void nb.offsetWidth; nb.classList.add('bump');
   if (st.playing && i>=0){ const sp = $('spark'); sp.style.left = (20 + Math.random()*60)+'%'; sp.style.top = (10 + Math.random()*25)+'%'; sp.classList.remove('go'); void sp.offsetWidth; sp.classList.add('go'); }
   $('num').textContent = pad(s.n); $('tm').textContent = s.label;
-  $('pg').textContent = `${word} ${s.n} de ${STEPS.length}`;
+  $('pg').textContent = `Página ${s.page+1} de ${PAGES}`;
   const ni = i<0 ? 0 : nextIdx(i), ns = STEPS[ni];
   if (i>=0 && ni===i && !st.loop){ $('next').style.visibility='hidden'; }
   else { $('next').style.visibility=''; $('nextPic').src = ns.img; $('nextName').textContent = `${word} ${pad(ns.n)} · ${ns.label}`; }
