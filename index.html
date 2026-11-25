@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Partituras en Movimiento</title>
 <meta name="description" content="Aplicación del cuaderno «Transforma el movimiento» · 1.º ESO. Aprende cuatro coreografías paso a paso.">
 <meta name="theme-color" content="#6f0a21">
@@ -324,6 +324,9 @@ body:not(.home) .homeonly{display:none!important}
 }
 @keyframes turnR{from{transform:perspective(1400px) rotateY(-70deg);opacity:.3}}
 @keyframes turnL{from{transform:perspective(1400px) rotateY(70deg);opacity:.3}}
+/* sin zoom: ni pellizcar ni doble toque; textos de formularios a 16px para que iOS no amplíe al escribir */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+input,textarea,select{font-size:max(16px,1em)}
 </style>
 </head>
 <body class="lib">
@@ -822,6 +825,15 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferr
 $('coverInstall').onclick = () => $('installBtn').click();
 $('installBtn').onclick = async () => { if (!deferredInstall) return; deferredInstall.prompt(); try { await deferredInstall.userChoice; } catch(e) {} deferredInstall = null; $('installBox').hidden = true; $('coverInstall').hidden = true; };
 if ('serviceWorker' in navigator && location.protocol === 'https:') { navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+
+/* ===================== sin zoom en la app ni en la web ===================== */
+(() => {
+  const stop = e => e.preventDefault();
+  ['gesturestart','gesturechange','gestureend'].forEach(t => document.addEventListener(t, stop, {passive:false}));   // Safari iOS
+  document.addEventListener('touchmove', e => { if (e.touches && e.touches.length > 1) e.preventDefault(); }, {passive:false});
+  window.addEventListener('wheel', e => { if (e.ctrlKey || e.metaKey) e.preventDefault(); }, {passive:false});            // trackpad / Ctrl + rueda
+  window.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && ['+','-','=','0','_'].includes(e.key)) e.preventDefault(); });
+})();
 </script>
 </body>
 </html>
