@@ -1,6 +1,6 @@
 # Partituras en Movimiento
 
-Aplicación del cuaderno didáctico **«Transforma el movimiento»** (1.º ESO · Música, Educación Física y Educación Plástica, Visual y Audiovisual).
+Aplicación para aprender cuatro coreografías paso a paso (1.º ESO · Música, Educación Física y Educación Plástica, Visual y Audiovisual).
 
 Cuatro emociones, cuatro canciones y cuatro coreografías:
 
@@ -12,7 +12,7 @@ Cuatro emociones, cuatro canciones y cuatro coreografías:
 | Alegría (dorado) | Piratas del Caribe | Acrosport | 0:00 – 1:10 |
 
 ## Pestañas de cada canción
-- **Bailar:** los pictogramas del cuaderno paso a paso, con los tiempos 1-2-3-4, metrónomo, velocidad, repetir paso y cuenta antes de empezar. Si hay música, los pasos van sincronizados con ella.
+- **Bailar:** los pictogramas paso a paso, con los tiempos 1-2-3-4, metrónomo, velocidad, repetir paso y cuenta antes de empezar. Si hay música, los pasos van sincronizados con ella.
 - **Partitura y letra:** las imágenes de la partitura de cada canción.
 
 ## Archivos que se suben a mano
