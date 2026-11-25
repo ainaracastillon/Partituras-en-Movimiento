@@ -336,6 +336,27 @@ input,textarea,select{font-size:max(16px,1em)}
   #v-bailar > .side{display:flex;flex-direction:column;justify-content:center;gap:12px;flex:1;min-width:330px}
   #v-bailar .controls{padding:6px 0}
 }
+
+/* ===================== Cómo se juega (ventana corta) ===================== */
+.qbtn{flex:none;margin-left:auto;width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--wine);font-weight:800;font-size:19px;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.howlink{background:none;color:var(--gold2);font-size:15px;font-weight:600;text-decoration:underline;text-underline-offset:4px}
+.hpop{position:fixed;inset:0;z-index:45;background:rgba(30,6,14,.6);display:flex;align-items:center;justify-content:center;padding:16px;animation:zin .2s ease-out}
+.hbox{width:100%;max-width:520px;max-height:calc(100dvh - 32px);overflow:auto;background:var(--paper);border:2px solid var(--gold);border-radius:22px;padding:16px 18px 18px;animation:hup .28s cubic-bezier(.3,1.3,.5,1)}
+@keyframes hup{from{transform:translateY(24px);opacity:0}}
+.htop{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.htop h2{font-family:var(--serif);font-weight:800;color:var(--wine2);font-size:24px;letter-spacing:.04em}
+.htop button{width:36px;height:36px;border-radius:11px;background:var(--cream);color:var(--wine2);font-size:17px}
+.hlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hlist li{display:flex;gap:12px;align-items:flex-start;background:var(--cream);border-radius:14px;padding:9px 12px;font-size:14.5px;line-height:1.38}
+.hlist i{font-style:normal;flex:none;width:32px;height:32px;border-radius:50%;background:var(--paper);border:1.5px solid var(--gold);display:grid;place-items:center;font-size:17px}
+.hlist b{color:var(--wine2)}
+.hlist em{font-style:normal;font-weight:600;color:var(--wine2)}
+.hbox h3{margin:14px 0 8px;font-family:var(--serif);color:var(--wine2);font-size:15px;letter-spacing:.1em;text-transform:uppercase}
+.hleg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.lchip{text-align:center;background:var(--bg);border:2px solid var(--bd);border-radius:99px;padding:5px 4px;font-weight:800;font-size:11.5px;letter-spacing:.04em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.htip{margin:8px 0 0;font-size:13.5px;color:var(--muted);line-height:1.4}
+.hok{display:flex;margin:14px auto 0;font-size:17px;padding:11px 28px;animation:none}
+@media (max-width:420px){ .hleg{grid-template-columns:repeat(2,minmax(0,1fr))} .hpop{align-items:flex-end;padding:0} .hbox{border-radius:22px 22px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))} }
 </style>
 </head>
 <body class="lib">
@@ -356,6 +377,7 @@ input,textarea,select{font-size:max(16px,1em)}
     <div class="eso">1.º ESO</div>
     <div class="chips"><span style="--c:#800020"><i></i>Amor</span><span style="--c:#7d9470"><i></i>Tristeza</span><span style="--c:#1a1a1a"><i></i>Ira</span><span style="--c:#d4af37"><i></i>Alegría</span></div>
     <a class="startbtn" href="#canciones">Empezar a bailar <span aria-hidden="true">›</span></a>
+    <button class="howlink" data-help>¿Cómo se juega?</button>
     <button class="inst" id="coverInstall" hidden>📲 Instalar la app en el móvil</button>
   </div>
 </section>
@@ -364,6 +386,7 @@ input,textarea,select{font-size:max(16px,1em)}
   <div class="hin">
     <img src="img/logo-dorado.png" alt="">
     <div><h1>Partituras en Movimiento</h1><p>Transforma el movimiento · 1.º ESO</p></div>
+    <button class="qbtn" data-help aria-label="Cómo se juega">?</button>
   </div>
 </header>
 
@@ -381,6 +404,7 @@ input,textarea,select{font-size:max(16px,1em)}
   <div class="in">
     <a class="back" href="#canciones" aria-label="Volver a las canciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
     <div class="tt"><h1 id="songTitle"></h1><div class="meta" id="songMeta"></div></div>
+    <button class="qbtn" data-help aria-label="Cómo se juega">?</button>
   </div>
 </header>
 
@@ -436,6 +460,27 @@ input,textarea,select{font-size:max(16px,1em)}
 </div>
 
 
+<div class="hpop" id="hpop" hidden role="dialog" aria-modal="true" aria-labelledby="hpopT">
+  <div class="hbox">
+    <div class="htop"><h2 id="hpopT">Cómo se juega</h2><button id="hclose" aria-label="Cerrar">✕</button></div>
+    <ol class="hlist">
+      <li><i>😊</i><span><b>Elige una emoción.</b> Cada una tiene su color y su canción.</span></li>
+      <li><i>🎵</i><span><b>Escucha y cuenta 1-2-3-4.</b> Siente el pulso antes de moverte.</span></li>
+      <li><i>💃</i><span><b>Baila.</b> En <em>Bailar</em>, sigue los pictogramas paso a paso. Baja la velocidad si lo necesitas.</span></li>
+      <li><i>🎼</i><span><b>Lee la partitura.</b> En <em>Partitura y letra</em>, marca el pulso con lo que indique cada etiqueta.</span></li>
+      <li><i>✨</i><span><b>Crea y comparte.</b> Cambia movimientos, inventa los tuyos y preparad una actuación.</span></li>
+    </ol>
+    <h3>Leyenda</h3>
+    <div class="hleg">
+      <span class="lchip" style="--bg:#d8c6f7;--bd:#9a7ddf">PIES</span>
+      <span class="lchip" style="--bg:#bfe9dc;--bd:#3fb391">PECHO</span>
+      <span class="lchip" style="--bg:#ffd98c;--bd:#e9a92a">CHASQUIDO</span>
+      <span class="lchip" style="--bg:#ffc9dc;--bd:#ec6f9f">PALMAS</span>
+    </div>
+    <p class="htip">Cada etiqueta dice con qué marcas el pulso desde ese compás. Antes de empezar, lee la partitura entera y localízalas.</p>
+    <button class="startbtn hok" id="hok">¡A bailar! <span aria-hidden="true">›</span></button>
+  </div>
+</div>
 <div class="zpop" id="zpop" hidden role="dialog" aria-modal="true" aria-label="Partitura ampliada">
   <div class="zbar"><span id="ztitle"></span>
     <button id="zprev" aria-label="Página anterior">‹</button><button id="znext" aria-label="Página siguiente">›</button>
@@ -845,6 +890,16 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') { navigator.
   window.addEventListener('wheel', e => { if (e.ctrlKey || e.metaKey) e.preventDefault(); }, {passive:false});            // trackpad / Ctrl + rueda
   window.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && ['+','-','=','0','_'].includes(e.key)) e.preventDefault(); });
 })();
+
+/* ===================== Cómo se juega ===================== */
+let helpFromCover = false;
+function openHelp(fromCover){ helpFromCover = !!fromCover; $('hpop').hidden = false; $('hbox') && 0; }
+function closeHelp(){ $('hpop').hidden = true; }
+document.addEventListener('click', e => { const b = e.target.closest('[data-help]'); if (!b) return; e.preventDefault(); openHelp(document.body.classList.contains('home')); });
+$('hclose').onclick = closeHelp;
+$('hpop').addEventListener('click', e => { if (e.target===$('hpop')) closeHelp(); });
+$('hok').onclick = () => { closeHelp(); if (helpFromCover) location.hash = 'canciones'; };
+document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('hpop').hidden) closeHelp(); });
 </script>
 </body>
 </html>
