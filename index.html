@@ -116,7 +116,6 @@ body:not(.home) .homeonly{display:none!important}
 .shead .tt{min-width:0;flex:1}
 .shead h1{font-size:22px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shead .meta{font-size:13px;color:var(--gold2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vid{flex:none;background:var(--gold);color:var(--wine);font-weight:800;font-size:14px;border-radius:12px;padding:8px 12px;white-space:nowrap}
 .app{max-width:620px;margin:0 auto;padding:12px max(14px,env(safe-area-inset-right,0px)) calc(96px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
 .view{display:flex;flex-direction:column;gap:10px}
 .emo{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--e)}
@@ -252,19 +251,6 @@ body:not(.home) .homeonly{display:none!important}
 .zpop img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);cursor:zoom-in;margin:auto}
 .zpop.full img{max-width:none;max-height:none;width:min(1600px,190vw);cursor:zoom-out;margin:0 auto}
 
-/* vídeo dentro de la app */
-.vpop{position:fixed;z-index:30;right:20px;bottom:96px;width:min(560px,calc(100vw - 24px));background:var(--wine2);border:3px solid var(--gold);border-radius:18px;box-shadow:0 18px 50px rgba(40,8,18,.45);overflow:hidden;animation:vin .25s cubic-bezier(.3,1.3,.5,1)}
-@keyframes vin{from{opacity:0;transform:translateY(20px) scale(.95)}}
-.vpop .vbar{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;color:var(--gold2);font-weight:700;font-size:14px;cursor:move;user-select:none;touch-action:none}
-.vpop .vbar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vpop .vbar button,.vpop .vbar a{flex:none;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer}
-.vpop .vbox{position:relative;aspect-ratio:16/9;background:#000}
-.vpop iframe,.vpop video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
-.vpop .vsync{display:none;background:var(--gold);color:var(--wine);font-size:12.5px;font-weight:700;text-align:center;padding:4px 8px}
-.vpop.local .vsync{display:block}
-.vpop.big{left:50%!important;top:50%!important;right:auto;bottom:auto;width:min(1100px,calc(100vw - 32px));transform:translate(-50%,-50%);animation:none}
-.vshade{position:fixed;inset:0;z-index:29;background:rgba(40,8,18,.55)}
-@media (max-width:640px){ .vpop{left:12px;right:12px;width:auto;bottom:auto;top:calc(84px + env(safe-area-inset-top,0px))} .vpop.big{transform:none;left:12px!important;right:12px;top:calc(84px + env(safe-area-inset-top,0px))!important;width:auto} }
 .sheet a{display:block;background:var(--paper);border:2px solid var(--gold);border-radius:16px;padding:8px;box-shadow:0 8px 20px rgba(111,10,33,.08)}
 .sheet img{display:block;width:100%;height:auto;border-radius:8px}
 .sheet .pn{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);font-weight:600;padding:6px 4px 0}
@@ -351,7 +337,6 @@ body:not(.home) .homeonly{display:none!important}
   <div class="in">
     <a class="back" href="#canciones" aria-label="Volver a las canciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
     <div class="tt"><h1 id="songTitle"></h1><div class="meta" id="songMeta"></div></div>
-    <button class="vid" id="vid" aria-label="Ver el vídeo">▶ Vídeo</button>
   </div>
 </header>
 
@@ -411,15 +396,6 @@ body:not(.home) .homeonly{display:none!important}
     <button id="zfull" aria-label="Ver más grande">⤢</button><button id="zclose" aria-label="Cerrar">✕</button></div>
   <div class="zimg" id="zimg"><img id="zpic" alt=""></div>
 </div>
-<div class="vshade" id="vshade" hidden></div>
-<div class="vpop" id="vpop" hidden role="dialog" aria-label="Vídeo de la canción">
-  <div class="vbar" id="vbar"><span id="vtitle">Vídeo</span>
-    <button id="vbig" aria-label="Ampliar el vídeo">⤢</button>
-    <a id="vext" href="#" target="_blank" rel="noopener" aria-label="Abrir en YouTube">↗</a>
-    <button id="vclose" aria-label="Cerrar el vídeo">✕</button></div>
-  <div class="vsync">Los pasos de la app van sincronizados con el vídeo</div>
-  <div class="vbox"><video id="vlocal" controls playsinline preload="metadata" hidden></video><iframe id="vframe" title="Vídeo de la canción" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-</div>
 
 <nav class="tabs songonly" role="tablist">
   <button role="tab" id="t-bailar" data-v="bailar" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="4.5" r="2.3"/><path d="M12 7v7M12 9l-5 3M12 9l5-4M12 14l-4 7M12 14l4 6"/></svg>Bailar</button>
@@ -428,20 +404,20 @@ body:not(.home) .homeonly{display:none!important}
 
 <script>
 /* ===================== CANCIONES (del cuaderno) =====================
-   Cada canción: emoción y color, fragmento del vídeo y la lista de pasos
+   Cada canción: emoción y color, fragmento de la canción y la lista de pasos
    con el segundo en que empiezan (como en las páginas «Movimiento»).
    Las imágenes están en img/<id>-NN.webp. */
 const every2 = Array.from({length:36}, (_,i) => 1 + i*2);
 const SONGS = [
   { id:'superestrella', title:'Superestrella', artist:'Aitana', emotion:'Amor', color:'#800020', style:'Zumba',
-    fragment:'0:14 – 1:14', offset:14, video:'https://www.youtube.com/watch?v=vz_vU53JvvI', yt:'vz_vU53JvvI', times:every2, end:73 },
+    fragment:'0:14 – 1:14', offset:14, times:every2, end:73 },
   { id:'broken-heart', title:'Me and My Broken Heart', artist:'Rixton', emotion:'Tristeza', color:'#7d9470', style:'Baile en pareja',
-    fragment:'1:27 – 2:35', offset:87, video:'https://www.youtube.com/watch?v=7JJfJgyHYwU', yt:'7JJfJgyHYwU', times:every2, end:73 },
+    fragment:'1:27 – 2:35', offset:87, times:every2, end:73 },
   { id:'so-what', title:'So What', artist:'P!nk', emotion:'Ira', color:'#1a1a1a', style:'Baile',
-    fragment:'0:00 – 1:08', offset:0, video:'https://www.youtube.com/watch?v=ywFM3MCRKJ8', yt:'ywFM3MCRKJ8',
+    fragment:'0:00 – 1:08', offset:0,
     times:[1,2,4,6,8,10,12,13,15,17,19,21,23,25,26,28,30,32,34,36,38,39,41,43,45,47,49,50,52,54,56,58,60,62,63,65], end:67 },
   { id:'piratas', title:'Piratas del Caribe', artist:'Klaus Badelt · Hans Zimmer', emotion:'Alegría', color:'#b8921f', style:'Acrosport',
-    fragment:'0:00 – 1:10', offset:0, video:'https://www.youtube.com/watch?v=BuYf0taXoNw', yt:'BuYf0taXoNw', figures:true, instrumental:true,
+    fragment:'0:00 – 1:10', offset:0, figures:true, instrumental:true,
     times:[0,8,16,18,27,34,49], ranges:['00:00 – 00:07','00:08 – 00:15','00:16 – 00:17','00:18 – 00:27','00:27 – 00:33','00:34 – 00:48','00:49 – 01:00'], end:61 }
 ];
 
@@ -505,7 +481,7 @@ async function loadAudio(id){
 let ac = null;
 function ensureAudio(){ try{ if(!ac) ac = new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==='suspended') ac.resume(); }catch(e){ ac=null; } }
 function click(accent){
-  if (!st.sound || !ac || st.vdrive) return;
+  if (!st.sound || !ac) return;
   const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
   o.frequency.value = accent ? 1568 : 1046; o.type = 'triangle';
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(accent?0.35:0.2,t+0.004); g.gain.exponentialRampToValueAtTime(0.0001,t+0.08);
@@ -554,7 +530,6 @@ function loadSong(song){
   document.title = `${song.title} · Partituras en Movimiento`;
   $('songTitle').textContent = song.title;
   $('songMeta').textContent = `${song.emotion} · ${song.style} · ${song.artist}`;
-  $('vid').href = song.video;
   $('stage').classList.toggle('fig', !!song.figures);
   $('beats').hidden = !!song.figures; $('hold').hidden = !song.figures;
   $('loop').innerHTML = song.figures ? '🔁 Repetir figura' : '🔁 Repetir paso';
@@ -562,7 +537,7 @@ function loadSong(song){
   // línea de tiempo
   tl.querySelectorAll('.tk').forEach(e=>e.remove());
   STEPS.forEach((s,i) => { if (i===0) return; const d=document.createElement('div'); d.className = 'tk' + (i%PER_PAGE===0?' pgk':''); d.style.left=(s.t/END*100)+'%'; tl.insertBefore(d,$('ph')); });
-  loadSheet(song.id); loadAudio(song.id); loadLyrics(song.id); closeZoom(); probeVideo(song.id);
+  loadSheet(song.id); loadAudio(song.id); loadLyrics(song.id); closeZoom();
   showView('bailar');
   render();
 }
@@ -634,11 +609,9 @@ function tick(ts){
       else if (cb!==st.ciBeat){ st.ciBeat=cb; click(cb===0); const n=$('ciNum'); n.textContent=cb+1; n.classList.remove('pop'); void n.offsetWidth; n.classList.add('pop'); }
     } else {
       const i = stepAt(st.clock);
-      if (st.vdrive) st.clock = $('vlocal').currentTime;
-      else if (hasAudio() && !audio.paused && audio.readyState>=2) st.clock = audio.currentTime - audioOffset;
+      if (hasAudio() && !audio.paused && audio.readyState>=2) st.clock = audio.currentTime - audioOffset;
       else if (!hasAudio()) st.clock += dt*st.speed;
-      if (st.vdrive){ if (st.clock >= END) st.clock = END - 1e-3; }
-      else if (st.loop && i>=0 && st.clock >= STEPS[i].t + STEPS[i].dur){ st.clock = STEPS[i].t; st.lastKey=null; audioSync(); }
+      if (st.loop && i>=0 && st.clock >= STEPS[i].t + STEPS[i].dur){ st.clock = STEPS[i].t; st.lastKey=null; audioSync(); }
       else if (st.clock >= END){ st.clock = END - 1e-3; finish(); }
     }
   }
@@ -658,7 +631,7 @@ function play(){
   if (st.countin) startCount(); else audioStart();
   setPlayIcon(); keepAwake(true); $('stage').classList.add('playing');
 }
-function pause(){ if (st.vdrive){ try{ $('vlocal').pause(); }catch(e){} st.vdrive=false; } audioStop(); st.playing=false; st.ci=null; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); $('ciBox').hidden=true; setPlayIcon(); keepAwake(false); }
+function pause(){ audioStop(); st.playing=false; st.ci=null; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); $('ciBox').hidden=true; setPlayIcon(); keepAwake(false); }
 function finish(){ pause(); st.ended=true; $('endBox').hidden=false; confetti(); }
 function confetti(){
   const box = $('confetti'), cols = ['#800020','#d4af37','#e3c46a','#7d9470','#1a1a1a'];
@@ -667,7 +640,6 @@ function confetti(){
 }
 function seekStep(i){
   i = Math.max(-1, Math.min(STEPS.length-1, i));
-  if (st.vdrive || (!$('vpop').hidden && !$('vlocal').hidden)){ try{ $('vlocal').currentTime = i<0 ? 0 : STEPS[i].t; }catch(e){} st.lastKey=null; if (st.vdrive) return; }
   st.clock = i<0 ? 0 : STEPS[i].t; st.lastKey=null; st.ended=false; $('endBox').hidden=true;
   if (st.playing && st.countin){ audioStop(); startCount(); } else if (st.playing) audioSync();
 }
@@ -788,60 +760,6 @@ $('audioIn').addEventListener('change', async e => {
 $('useMusic').onclick = () => { useAudio = !useAudio; $('useMusic').setAttribute('aria-pressed', String(useAudio)); if (!useAudio) audioStop(); else if (st.playing && st.ci===null) audioStart(); };
 $('delMusic').onclick = async () => { await idb.del('audio.'+SONG.id); setAudio(null); };
 
-/* vídeo dentro de la app: ventana flotante que se puede mover, ampliar y cerrar */
-// Si en la web hay videos/<canción>.mp4, se usa ese vídeo (y los pasos lo siguen); si no, YouTube.
-let localVideo = null;
-async function probeVideo(id){
-  localVideo = null;
-  try { const u = `videos/${id}.mp4`, r = await fetch(u, {method:'HEAD', cache:'no-store'});
-        if (r.ok && (r.headers.get('content-type')||'').includes('video') && SONG && SONG.id===id) localVideo = u; } catch(e) {}
-}
-const vl = $('vlocal');
-vl.addEventListener('play', () => {
-  if (st.playing && !st.vdrive){ audioStop(); st.ci=null; $('ciBox').hidden=true; }
-  ensureAudio(); st.vdrive = true; st.playing = true; st.ended = false; $('endBox').hidden = true; st.lastKey = null;
-  $('stage').classList.add('playing'); setPlayIcon(); keepAwake(true);
-});
-const stopDrive = () => { if (!st.vdrive) return; st.vdrive = false; st.playing = false; $('stage').classList.remove('playing','flash'); $('next').classList.remove('soon'); setPlayIcon(); keepAwake(false); };
-vl.addEventListener('pause', stopDrive);
-vl.addEventListener('ended', () => { stopDrive(); confetti(); });
-vl.addEventListener('seeked', () => { st.clock = vl.currentTime; st.lastKey = null; });
-function openVideo(){
-  if (!SONG) return;
-  if (st.playing) pause();                       // que no suenen a la vez la app y el vídeo
-  const v = $('vpop');
-  if (localVideo){
-    $('vframe').hidden = true; $('vframe').src = 'about:blank'; vl.hidden = false; v.classList.add('local');
-    $('vtitle').textContent = `${SONG.title} · coreografía`; $('vext').hidden = true;
-    if (vl.getAttribute('src') !== localVideo) vl.src = localVideo;
-    try { vl.currentTime = Math.max(0, st.clock); } catch(e) {}
-    v.hidden = false; v.classList.remove('big'); v.style.left = v.style.top = ''; $('vshade').hidden = true;
-    vl.play().catch(()=>{});
-    return;
-  }
-  if (!SONG.yt) return;
-  vl.hidden = true; vl.removeAttribute('src'); $('vframe').hidden = false; v.classList.remove('local'); $('vext').hidden = false;
-  const start = SONG.offset || 0;
-  $('vtitle').textContent = `${SONG.title} · desde ${m_ss(start)}`;
-  $('vext').href = `https://www.youtube.com/watch?v=${SONG.yt}&t=${start}s`;
-  $('vframe').src = `https://www.youtube-nocookie.com/embed/${SONG.yt}?start=${start}&autoplay=1&rel=0&playsinline=1&modestbranding=1`;
-  v.hidden = false; v.classList.remove('big'); v.style.left = v.style.top = ''; $('vshade').hidden = true;
-}
-function closeVideo(){ $('vpop').hidden = true; $('vshade').hidden = true; $('vframe').src = 'about:blank'; try{ vl.pause(); }catch(e){} stopDrive(); }
-$('vid').onclick = openVideo;
-$('vclose').onclick = closeVideo;
-$('vshade').onclick = () => { $('vpop').classList.remove('big'); $('vshade').hidden = true; };
-$('vbig').onclick = () => { const v=$('vpop'); const big = !v.classList.contains('big'); v.classList.toggle('big', big); $('vshade').hidden = !big; if (!big){ v.style.left = v.style.top = ''; } };
-document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('vpop').hidden) closeVideo(); });
-(() => { // arrastrar la ventana por su barra
-  const v = $('vpop'), bar = $('vbar'); let sx=0, sy=0, ox=0, oy=0, drag=false;
-  bar.addEventListener('pointerdown', e => { if (e.target.closest('button,a') || v.classList.contains('big') || innerWidth<=640) return;
-    const r = v.getBoundingClientRect(); drag=true; sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top; bar.setPointerCapture(e.pointerId); });
-  bar.addEventListener('pointermove', e => { if (!drag) return;
-    const x = Math.max(0, Math.min(innerWidth - v.offsetWidth, ox + e.clientX - sx)), y = Math.max(0, Math.min(innerHeight - 60, oy + e.clientY - sy));
-    v.style.left = x+'px'; v.style.top = y+'px'; v.style.right = 'auto'; v.style.bottom = 'auto'; });
-  bar.addEventListener('pointerup', () => drag=false); bar.addEventListener('pointercancel', () => drag=false);
-})();
 
 /* ===================== pestañas y navegación ===================== */
 const tabs = [...document.querySelectorAll('.tabs button')];
@@ -856,8 +774,8 @@ tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
 function route(){
   const h = location.hash.slice(1), song = SONGS.find(s=>s.id===h);
   document.body.classList.toggle('home', !song && h!=='canciones');
-  if (song){ document.body.classList.remove('lib'); if (SONG!==song){ closeVideo(); loadSong(song); } }
-  else { if (st.playing) pause(); closeVideo(); document.body.classList.add('lib'); document.title = 'Partituras en Movimiento'; }
+  if (song){ document.body.classList.remove('lib'); if (SONG!==song) loadSong(song); }
+  else { if (st.playing) pause(); document.body.classList.add('lib'); document.title = 'Partituras en Movimiento'; }
   window.scrollTo(0,0);
 }
 window.addEventListener('hashchange', route);
