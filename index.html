@@ -292,6 +292,38 @@ body:not(.home) .homeonly{display:none!important}
   .install{max-width:none;margin:18px 0 0}
 }
 @media (min-width:900px) and (max-width:1100px){ .songs{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* ===================== Partituras como un libro ===================== */
+.sheet a{position:relative;border:0;border-radius:3px 8px 8px 3px;padding:0;background:#fffdf8;overflow:visible;cursor:zoom-in;
+  box-shadow:3px 3px 0 #f3ead6,6px 6px 0 #e6dbc2,9px 9px 0 #d9cba9,0 16px 26px rgba(60,6,20,.22)}
+.sheet a::before{content:"";position:absolute;left:-12px;top:-2px;bottom:-2px;width:12px;border-radius:6px 0 0 6px;
+  background:linear-gradient(90deg,#4f0716,#800020 55%,#5c0819);box-shadow:inset -2px 0 0 var(--gold)}
+.sheet a::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(90deg,rgba(40,20,10,.22),rgba(40,20,10,.06) 5%,transparent 14%,transparent 92%,rgba(255,255,255,.35))}
+.sheet img{border-radius:inherit}
+.sheet .pn{position:absolute;left:0;right:0;bottom:6px;justify-content:center;padding:0;font-size:11px;color:#a08f7a;pointer-events:none;z-index:1}
+.sheet .pn span:last-child{display:none}
+.sheet{gap:26px;padding-left:12px}
+@media (min-width:900px){
+  body.vletra .sheet{position:relative;gap:0;padding:16px 18px 20px;width:fit-content;max-width:100%;margin:0 auto;
+    background:linear-gradient(160deg,#8a1430,#5a0719 70%);border:2px solid var(--gold);border-radius:16px;
+    box-shadow:0 22px 44px rgba(60,6,20,.35),inset 0 0 0 7px #6a0a20,inset 0 0 0 8px color-mix(in srgb,var(--gold) 60%,transparent)}
+  body.vletra .sheet a{padding:0;height:100%}
+  body.vletra .sheet a::before{display:none}
+  body.vletra .sheet a:nth-child(odd){border-radius:6px 0 0 6px;box-shadow:-3px 3px 0 #f3ead6,-6px 6px 0 #e6dbc2,-9px 9px 0 #d9cba9}
+  body.vletra .sheet a:nth-child(even){border-radius:0 6px 6px 0;box-shadow:3px 3px 0 #f3ead6,6px 6px 0 #e6dbc2,9px 9px 0 #d9cba9}
+  body.vletra .sheet a:nth-child(odd)::after{background:linear-gradient(270deg,rgba(40,20,10,.28),rgba(40,20,10,.08) 4%,transparent 12%,transparent 94%,rgba(255,255,255,.3))}
+  body.vletra .sheet a:nth-child(even)::after{background:linear-gradient(90deg,rgba(40,20,10,.28),rgba(40,20,10,.08) 4%,transparent 12%,transparent 94%,rgba(255,255,255,.3))}
+  body.vletra .sheet a:only-of-type{border-radius:6px}
+  body.vletra .sheet img{height:100%;width:auto;max-width:none}
+  /* cinta marcapáginas */
+  body.vletra .sheet::after{content:"";position:absolute;top:-6px;right:22%;width:16px;height:70px;background:linear-gradient(90deg,#b8921f,var(--gold2),#b8921f);
+    clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));z-index:2}
+  body.vletra .sheet.turn a:nth-child(even):not([hidden]){animation:turnR .5s ease-out;transform-origin:left center}
+  body.vletra .sheet.turn a:nth-child(odd):not([hidden]){animation:turnL .5s ease-out;transform-origin:right center}
+}
+@keyframes turnR{from{transform:perspective(1400px) rotateY(-70deg);opacity:.3}}
+@keyframes turnL{from{transform:perspective(1400px) rotateY(70deg);opacity:.3}}
 </style>
 </head>
 <body class="lib">
@@ -699,6 +731,7 @@ function showPair(){
   items.forEach((a,k) => a.hidden = wide() && Math.floor(k/2)!==sheetPair);
   $('sheetNav').hidden = !(wide() && pairs>1);
   $('shInfo').textContent = `Páginas ${sheetPair*2+1}–${Math.min(items.length, sheetPair*2+2)} de ${items.length}`;
+  const sh = $('sheet'); sh.classList.remove('turn'); void sh.offsetWidth; if (showPair._init) sh.classList.add('turn'); showPair._init = true;
   $('shPrev').disabled = sheetPair<=0; $('shNext').disabled = sheetPair>=pairs-1;
 }
 /* partitura ampliada en una ventana dentro de la app */
