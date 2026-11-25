@@ -780,7 +780,7 @@ async function loadSheet(id){
   sheetPages = pages;
   $('sheet').innerHTML = pages.map((u,k)=>`<a href="${u}" data-k="${k}"><img src="${u}" alt="Partitura de ${esc(SONG.title)}, página ${k+1}"><div class="pn"><span>Página ${k+1} de ${pages.length}</span><span>Toca para ampliar ⤢</span></div></a>`).join('');
   $('sheetEmpty').hidden = pages.length>0;
-  sheetPair = 0; showPair();
+  sheetPair = restorePair || 0; restorePair = 0; showPair();
 }
 // En el ordenador se ven dos páginas a la vez; con más de dos, se pasa de pareja con ‹ ›.
 let sheetPair = 0;
@@ -855,23 +855,52 @@ $('delMusic').onclick = async () => { await idb.del('audio.'+SONG.id); setAudio(
 
 /* ===================== pestañas y navegación ===================== */
 const tabs = [...document.querySelectorAll('.tabs button')];
-function showView(v){
+function showView(v, keepScroll){
   tabs.forEach(t=>t.setAttribute('aria-selected', String(t.dataset.v===v)));
   ['bailar','letra'].forEach(n=>$('v-'+n).hidden = n!==v);
   document.body.classList.toggle('vletra', v==='letra');
-  window.scrollTo(0,0);
+  // la pestaña va en la dirección, para que al recargar se abra la misma
+  if (SONG){ const want = '#' + SONG.id + (v==='letra' ? '-partitura' : ''); if (location.hash !== want) history.replaceState(null, '', want); }
+  if (!keepScroll) window.scrollTo(0,0);
 }
 tabs.forEach(t => t.onclick = () => showView(t.dataset.v));
 
-function route(){
-  const h = location.hash.slice(1), song = SONGS.find(s=>s.id===h);
+function route(first){
+  let h = location.hash.slice(1), tab = 'bailar';
+  if (h.endsWith('-partitura')){ h = h.slice(0, -10); tab = 'letra'; }
+  const song = SONGS.find(s=>s.id===h);
   document.body.classList.toggle('home', !song && h!=='canciones');
-  if (song){ document.body.classList.remove('lib'); if (SONG!==song) loadSong(song); }
+  if (song){
+    document.body.classList.remove('lib');
+    if (SONG!==song){ loadSong(song); if (first) restoreStep(song.id); }
+    showView(tab, first);
+  }
   else { if (st.playing) pause(); document.body.classList.add('lib'); document.title = 'Partituras en Movimiento'; }
-  window.scrollTo(0,0);
+  if (!first) window.scrollTo(0,0);
 }
-window.addEventListener('hashchange', route);
-route();
+
+/* Al recargar se vuelve exactamente al mismo sitio: canción, pestaña, paso, página del libro y scroll */
+const ses = { get(k){ try{ return JSON.parse(sessionStorage.getItem('pem.'+k)); }catch(e){ return null; } }, set(k,v){ try{ sessionStorage.setItem('pem.'+k, JSON.stringify(v)); }catch(e){} } };
+function saveState(){
+  ses.set('state', { hash: location.hash, step: SONG ? stepAt(st.clock) : -1, pair: typeof sheetPair==='number' ? sheetPair : 0, y: window.scrollY });
+}
+function restoreStep(id){
+  const s0 = ses.get('state'); if (!s0 || s0.hash.replace('-partitura','') !== '#'+id) return;
+  if (s0.step >= 0 && STEPS[s0.step]){ st.clock = STEPS[s0.step].t; st.idx = -2; }
+  if (s0.pair){ sheetPair = s0.pair; restorePair = s0.pair; }
+}
+let restorePair = 0;
+window.addEventListener('pagehide', saveState);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState==='hidden') saveState(); });
+window.addEventListener('beforeunload', saveState);
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('hashchange', () => route(false));
+route(true);
+(() => {   // scroll guardado: se aplica cuando ya han cargado imágenes y letras
+  const s0 = ses.get('state'); if (!s0 || s0.hash !== location.hash || !s0.y) return;
+  const go = () => window.scrollTo(0, s0.y);
+  setTimeout(go, 150); setTimeout(go, 700); window.addEventListener('load', () => setTimeout(go, 50), {once:true});
+})();
 setPlayIcon();
 requestAnimationFrame(tick);
 
