@@ -305,41 +305,30 @@ body:not(.home) .homeonly{display:none!important}
 .sheet .pn span:last-child{display:none}
 .sheet{gap:26px;padding-left:12px}
 @media (min-width:900px){
-  /* libro de tapa dura abierto */
-  body.vletra .sheet{position:relative;gap:0;padding:18px 22px 22px;width:fit-content;max-width:100%;margin:6px auto 0;border:0;border-radius:7px 7px 9px 9px;
-    background:radial-gradient(ellipse at 25% 15%,rgba(255,255,255,.10),transparent 55%),radial-gradient(ellipse at 80% 90%,rgba(0,0,0,.18),transparent 60%),linear-gradient(180deg,#8a1430,#5c0819);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),inset 0 0 0 4px rgba(0,0,0,.12),inset 0 0 0 5px color-mix(in srgb,var(--gold) 35%,transparent),
-      0 3px 0 #4d0714,0 5px 0 #3f0510,0 28px 34px rgba(40,4,14,.38),0 8px 12px rgba(40,4,14,.25)}
-  body.vletra .sheet a{position:relative;z-index:2;padding:0;height:100%;background:#fffdf8;box-shadow:none;transform:none}
-  body.vletra .sheet a::before{display:none}
-  body.vletra .sheet a:nth-of-type(odd){border-radius:2px 0 0 2px;
-    clip-path:polygon(0 1.2%,30% .5%,62% .15%,82% .45%,93% 1.3%,100% 2.8%,100% 97.6%,93% 98.7%,80% 99.4%,50% 99.8%,0 99.2%)}
-  body.vletra .sheet a:nth-of-type(even){border-radius:0 2px 2px 0;
-    clip-path:polygon(0 2.8%,7% 1.3%,18% .45%,38% .15%,70% .5%,100% 1.2%,100% 99.2%,50% 99.8%,20% 99.4%,7% 98.7%,0 97.6%)}
-  body.vletra .sheet a:nth-of-type(odd)::after{background:
-    linear-gradient(270deg,rgba(45,25,10,.38),rgba(45,25,10,.16) 2.5%,rgba(45,25,10,.06) 7%,transparent 15%),
-    linear-gradient(90deg,rgba(45,25,10,.07),transparent 6%),linear-gradient(180deg,rgba(255,255,255,.25),transparent 12%,transparent 88%,rgba(45,25,10,.06))}
-  body.vletra .sheet a:nth-of-type(even)::after{background:
-    linear-gradient(90deg,rgba(45,25,10,.38),rgba(45,25,10,.16) 2.5%,rgba(45,25,10,.06) 7%,transparent 15%),
-    linear-gradient(270deg,rgba(45,25,10,.07),transparent 6%),linear-gradient(180deg,rgba(255,255,255,.25),transparent 12%,transparent 88%,rgba(45,25,10,.06))}
-  body.vletra .sheet a:only-of-type{clip-path:none;border-radius:2px}
+  /* libro abierto: sin caja; tapa que asoma por los bordes, páginas inclinadas hacia el lomo */
+  body.vletra .sheet{position:relative;gap:0;padding:14px 26px 30px;width:fit-content;max-width:100%;margin:0 auto;background:none;border:0;box-shadow:none;
+    perspective:2200px;filter:drop-shadow(0 26px 22px rgba(60,6,20,.28))}
+  body.vletra .sheet a{padding:0;height:100%;background:#fffdf8;transform-style:preserve-3d}
+  body.vletra .sheet a::before{display:block;content:"";position:absolute;top:-8px;bottom:-14px;width:calc(100% + 16px);left:auto;right:auto;z-index:-1;
+    background:linear-gradient(180deg,#8a1430,#5f0819);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--gold) 70%,transparent)}
+  body.vletra .sheet a:nth-child(odd){transform:rotateY(7deg);transform-origin:right center;border-radius:14px 2px 2px 18px/10px 2px 2px 26px;
+    box-shadow:-2px 2px 0 #f6eedc,-4px 4px 0 #ece1c8,-6px 6px 0 #e2d4b6,-8px 8px 0 #d6c6a4}
+  body.vletra .sheet a:nth-child(odd)::before{left:-16px;border-radius:18px 4px 4px 22px/12px 4px 4px 28px}
+  body.vletra .sheet a:nth-child(even){transform:rotateY(-7deg);transform-origin:left center;border-radius:2px 14px 18px 2px/2px 10px 26px 2px;
+    box-shadow:2px 2px 0 #f6eedc,4px 4px 0 #ece1c8,6px 6px 0 #e2d4b6,8px 8px 0 #d6c6a4}
+  body.vletra .sheet a:nth-child(even)::before{right:-16px;border-radius:4px 18px 22px 4px/4px 12px 28px 4px}
+  body.vletra .sheet a:nth-child(odd)::after{background:linear-gradient(270deg,rgba(40,20,10,.34),rgba(40,20,10,.12) 3%,rgba(40,20,10,.04) 9%,transparent 16%,transparent 93%,rgba(255,255,255,.4))}
+  body.vletra .sheet a:nth-child(even)::after{background:linear-gradient(90deg,rgba(40,20,10,.34),rgba(40,20,10,.12) 3%,rgba(40,20,10,.04) 9%,transparent 16%,transparent 93%,rgba(255,255,255,.4))}
+  body.vletra .sheet a:only-of-type{transform:none;border-radius:4px 14px 18px 4px}
   body.vletra .sheet img{height:100%;width:auto;max-width:none}
-  /* canto de las hojas, lomo y cinta */
-  .sheet .leaves,.sheet .spine,.sheet .ribbon{display:none}
-  body.vletra .sheet .leaves{display:block;position:absolute;z-index:1;pointer-events:none}
-  body.vletra .sheet .leaves.l{left:14px;top:22px;bottom:16px;width:8px;border-radius:4px 0 0 4px;background:repeating-linear-gradient(90deg,#fbf7ee 0 1px,#ddd2bb 1px 2px)}
-  body.vletra .sheet .leaves.r{right:14px;top:22px;bottom:16px;width:8px;border-radius:0 4px 4px 0;background:repeating-linear-gradient(270deg,#fbf7ee 0 1px,#ddd2bb 1px 2px)}
-  body.vletra .sheet .leaves.b{left:20px;right:20px;bottom:15px;height:7px;border-radius:0 0 6px 6px;background:repeating-linear-gradient(180deg,#fbf7ee 0 1px,#d9cdb3 1px 2px)}
-  body.vletra .sheet .spine{display:block;position:absolute;z-index:1;left:50%;top:6px;bottom:4px;width:26px;margin-left:-13px;border-radius:6px;
-    background:linear-gradient(90deg,#3f0510,#7d0f29 30%,#9a1a38 50%,#7d0f29 70%,#3f0510)}
-  body.vletra .sheet .ribbon{display:block;position:absolute;z-index:3;bottom:-26px;left:calc(50% + 26px);width:13px;height:58px;
-    background:linear-gradient(90deg,#a8841b,var(--gold2) 50%,#a8841b);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);filter:drop-shadow(0 2px 1px rgba(0,0,0,.3))}
-  body.vletra .sheet::after{display:none}
-  body.vletra .sheet.turn a:nth-of-type(even):not([hidden]){animation:turnR .55s ease-out;transform-origin:left center}
-  body.vletra .sheet.turn a:nth-of-type(odd):not([hidden]){animation:turnL .55s ease-out;transform-origin:right center}
+  /* cinta marcapáginas que sale por abajo del lomo */
+  body.vletra .sheet::after{content:"";position:absolute;bottom:-6px;left:calc(50% + 40px);width:14px;height:64px;background:linear-gradient(90deg,#b8921f,var(--gold2),#b8921f);
+    clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);z-index:3}
+  body.vletra .sheet.turn a:nth-child(even):not([hidden]){animation:turnR .5s ease-out}
+  body.vletra .sheet.turn a:nth-child(odd):not([hidden]){animation:turnL .5s ease-out}
 }
-@keyframes turnR{from{transform:perspective(1800px) rotateY(-80deg);opacity:.3}}
-@keyframes turnL{from{transform:perspective(1800px) rotateY(80deg);opacity:.3}}
+@keyframes turnR{from{transform:rotateY(-80deg);opacity:.3}}
+@keyframes turnL{from{transform:rotateY(80deg);opacity:.3}}
 </style>
 </head>
 <body class="lib">
@@ -735,7 +724,7 @@ async function loadSheet(id){
   for (let n=1; n<=12; n++){ const u = await findPage(id, n); if (!u) break; pages.push(u); }
   if (!SONG || SONG.id!==id) return;
   sheetPages = pages;
-  $('sheet').innerHTML = pages.map((u,k)=>`<a href="${u}" data-k="${k}"><img src="${u}" alt="Partitura de ${esc(SONG.title)}, página ${k+1}"><div class="pn"><span>Página ${k+1} de ${pages.length}</span><span>Toca para ampliar ⤢</span></div></a>`).join('') + '<i class="leaves l"></i><i class="leaves r"></i><i class="leaves b"></i><i class="spine"></i><i class="ribbon"></i>';
+  $('sheet').innerHTML = pages.map((u,k)=>`<a href="${u}" data-k="${k}"><img src="${u}" alt="Partitura de ${esc(SONG.title)}, página ${k+1}"><div class="pn"><span>Página ${k+1} de ${pages.length}</span><span>Toca para ampliar ⤢</span></div></a>`).join('');
   $('sheetEmpty').hidden = pages.length>0;
   sheetPair = 0; showPair();
 }
