@@ -327,6 +327,15 @@ body:not(.home) .homeonly{display:none!important}
 /* sin zoom: ni pellizcar ni doble toque; textos de formularios a 16px para que iOS no amplíe al escribir */
 html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 input,textarea,select{font-size:max(16px,1em)}
+/* Ordenador: Bailar en dos columnas, sin scroll */
+.side{display:contents}
+@media (min-width:900px){
+  body:not(.lib):not(.vletra) .app,body:not(.lib):not(.vletra) .shead .in{max-width:1240px}
+  #v-bailar{flex-direction:row;align-items:stretch;gap:28px;height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:440px}
+  #v-bailar > .stage{flex:1.45;height:auto;min-width:0}
+  #v-bailar > .side{display:flex;flex-direction:column;justify-content:center;gap:12px;flex:1;min-width:330px}
+  #v-bailar .controls{padding:6px 0}
+}
 </style>
 </head>
 <body class="lib">
@@ -392,6 +401,7 @@ input,textarea,select{font-size:max(16px,1em)}
       <div class="overlay" id="ciBox" hidden><div class="countin" id="ciNum"></div></div>
       <div class="overlay" id="endBox" hidden><div class="endmsg"><b>¡Bravo!</b><p id="endTxt">Has bailado la coreografía entera.</p><button class="btn" id="again">Otra vez</button></div></div>
     </div>
+    <div class="side">
         <div class="beats" id="beats"><b class="one">1</b><b>2</b><b>3</b><b>4</b></div>
     <div class="hold" id="hold" hidden><div class="ht"><b>Mantén la figura</b><span id="holdTxt"></span></div><div class="bar"><i id="holdBar"></i></div></div>
     <div class="next" id="next"><img id="nextPic" alt=""><div><div class="lbl">Después</div><div class="nn" id="nextName"></div></div></div>
@@ -411,7 +421,8 @@ input,textarea,select{font-size:max(16px,1em)}
       <button class="tog" id="loop" aria-pressed="false">🔁 Repetir paso</button>
       <button class="tog" id="ci" aria-pressed="true">⏱ Cuenta antes</button>
     </div>
-  </section>
+      </div>
+</section>
 
   <!-- PARTITURA Y LETRA -->
   <section class="view" id="v-letra" role="tabpanel" aria-labelledby="t-letra" hidden>
