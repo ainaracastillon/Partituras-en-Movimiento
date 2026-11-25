@@ -357,6 +357,11 @@ input,textarea,select{font-size:max(16px,1em)}
 .htip{margin:8px 0 0;font-size:13.5px;color:var(--muted);line-height:1.4}
 .hok{display:flex;margin:14px auto 0;font-size:17px;padding:11px 28px;animation:none}
 @media (max-width:420px){ .hleg{grid-template-columns:repeat(2,minmax(0,1fr))} .hpop{align-items:flex-end;padding:0} .hbox{border-radius:22px 22px 0 0;border-bottom:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))} }
+/* móvil: el botón ? de la cabecera va en la esquina, sin empujar el título */
+@media (max-width:700px){
+  .hero .qbtn{position:absolute;top:calc(var(--top) - 6px);right:12px;width:34px;height:34px;font-size:18px;margin:0;z-index:2}
+  .hero h1{padding-right:30px}
+}
 </style>
 </head>
 <body class="lib">
