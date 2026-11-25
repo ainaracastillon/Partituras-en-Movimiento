@@ -1,6 +1,6 @@
 # Partituras en Movimiento
 
-Aplicación del cuaderno didáctico **«Transforma el movimiento»** (1º ESO · Música, Educación Física y Educación Plástica, Visual y Audiovisual).
+Aplicación para aprender cuatro coreografías paso a paso (1º ESO · Música, Educación Física y Educación Plástica, Visual y Audiovisual).
 
 Cuatro emociones, cuatro canciones y cuatro coreografías:
 
